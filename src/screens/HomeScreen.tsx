@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { motion } from 'framer-motion'
 import { useApp } from '../store/AppContext'
 import { Modal } from '../components/Modal'
 import { PACKS } from '../data/packs'
+import { Cards, ChevronLeft, Pencil, People, Play, Settings } from '../components/Icon'
 import type { Screen } from '../types'
 
 interface Props {
@@ -12,67 +12,94 @@ interface Props {
 }
 
 export function HomeScreen({ go, onPlay, canPlay }: Props) {
-  const { s, n, L, players, packs, customCards } = useApp()
+  const { s, n, players, packs, customCards } = useApp()
   const [howTo, setHowTo] = useState(false)
 
   const chosen = PACKS.filter((pack) => packs.includes(pack.id))
+  const deckSize = chosen.reduce(
+    (total, pack) => total + (pack.id === 'perso' ? customCards.length : pack.cards.length),
+    0,
+  )
 
   return (
-    <div className="screen justify-between py-6">
-      <div className="flex flex-1 flex-col items-center justify-center text-center">
-        <motion.div
-          initial={{ scale: 0.85, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-          className="mb-5 text-7xl"
-        >
-          🍸
-        </motion.div>
-        <h1 className="bg-gradient-to-br from-white via-white to-white/50 bg-clip-text text-5xl font-black tracking-tight text-transparent">
-          {s('appName')}
-        </h1>
-        <p className="mt-3 max-w-[16rem] text-sm text-white/50">{s('tagline')}</p>
-
-        <div className="mt-6 flex flex-wrap justify-center gap-1.5">
-          {chosen.map((pack) => (
-            <span
-              key={pack.id}
-              className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-white/70"
-            >
-              {pack.emoji} {L(pack.name)}
-            </span>
-          ))}
-        </div>
+    <div className="screen py-6">
+      {/* Masthead: the colour bar is the pack palette, doubling as a legend. */}
+      <div className="flex shrink-0 gap-1 pb-6">
+        {PACKS.map((pack) => (
+          <span
+            key={pack.id}
+            className="h-1 flex-1 rounded-full transition-opacity"
+            style={{
+              backgroundColor: pack.color,
+              opacity: packs.includes(pack.id) ? 1 : 0.18,
+            }}
+          />
+        ))}
       </div>
 
-      <div className="space-y-2.5 pb-2">
-        <button type="button" onClick={onPlay} disabled={!canPlay} className="btn-primary w-full text-lg">
-          ▶ {s('homeStart')}
+      {/* Masthead sits high and the controls sit low, so the page has one
+          deliberate void rather than two accidental ones. */}
+      <div className="flex flex-1 flex-col pt-4">
+        <h1 className="text-[3.25rem] font-bold leading-none -tracking-[0.035em]">
+          {s('appName')}
+        </h1>
+        <p className="mt-3 max-w-[17rem] text-[0.9375rem] leading-snug text-white/45">
+          {s('tagline')}
+        </p>
+
+        <dl className="mt-8 flex gap-8">
+          <div>
+            <dt className="label text-white/35">{s('homePlayers')}</dt>
+            <dd className="tabular mt-1.5 text-2xl font-semibold -tracking-[0.02em]">
+              {players.length}
+            </dd>
+          </div>
+          <div>
+            <dt className="label text-white/35">{s('homePacks')}</dt>
+            <dd className="tabular mt-1.5 text-2xl font-semibold -tracking-[0.02em]">
+              {packs.length}
+            </dd>
+          </div>
+          <div>
+            <dt className="label text-white/35">{s('unitCardMany')}</dt>
+            <dd className="tabular mt-1.5 text-2xl font-semibold -tracking-[0.02em]">{deckSize}</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div className="shrink-0 space-y-2 pb-1">
+        <button type="button" onClick={onPlay} disabled={!canPlay} className="btn-primary w-full">
+          <Play className="h-4 w-4" />
+          {s('homeStart')}
         </button>
 
-        <div className="grid grid-cols-2 gap-2.5">
-          <MenuTile
+        <nav className="surface divide-y divide-ink-800 overflow-hidden">
+          <MenuRow
             label={s('homePlayers')}
             hint={n(players.length, 'unitPlayerOne', 'unitPlayerMany')}
-            emoji="👥"
+            icon={<People />}
             onClick={() => go('players')}
           />
-          <MenuTile
+          <MenuRow
             label={s('homePacks')}
             hint={n(packs.length, 'unitPackOne', 'unitPackMany')}
-            emoji="🎴"
+            icon={<Cards />}
             onClick={() => go('packs')}
           />
-          <MenuTile
+          <MenuRow
             label={s('homeCustom')}
             hint={n(customCards.length, 'unitCardOne', 'unitCardMany')}
-            emoji="✍️"
+            icon={<Pencil />}
             onClick={() => go('custom')}
           />
-          <MenuTile label={s('homeSettings')} hint="" emoji="⚙️" onClick={() => go('settings')} />
-        </div>
+          <MenuRow label={s('homeSettings')} icon={<Settings />} onClick={() => go('settings')} />
+        </nav>
 
-        <button type="button" onClick={() => setHowTo(true)} className="btn-quiet w-full text-sm">
+        <button
+          type="button"
+          onClick={() => setHowTo(true)}
+          className="w-full py-3 text-[0.8125rem] font-normal text-white/35 transition-colors active:text-white"
+        >
           {s('homeHowTo')}
         </button>
       </div>
@@ -88,34 +115,33 @@ export function HomeScreen({ go, onPlay, canPlay }: Props) {
         }
       >
         <p>{s('howToBody')}</p>
-        <p className="mt-3 rounded-2xl border border-white/10 bg-white/5 p-3 text-white/60">
-          ⚠️ {s('howToSafety')}
-        </p>
+        <p className="mt-4 border-l-2 border-ink-600 pl-3 text-white/50">{s('howToSafety')}</p>
       </Modal>
     </div>
   )
 }
 
-function MenuTile({
+function MenuRow({
   label,
   hint,
-  emoji,
+  icon,
   onClick,
 }: {
   label: string
-  hint: string
-  emoji: string
+  hint?: string
+  icon: React.ReactNode
   onClick: () => void
 }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className="surface flex flex-col items-start gap-0.5 p-4 text-left transition active:scale-[0.97]"
+      className="flex w-full items-center gap-3 px-4 py-3.5 text-left transition-colors active:bg-ink-850"
     >
-      <span className="text-xl">{emoji}</span>
-      <span className="text-sm font-semibold">{label}</span>
-      {hint && <span className="text-xs text-white/40">{hint}</span>}
+      <span className="text-white/40">{icon}</span>
+      <span className="flex-1 text-[0.9375rem] font-medium">{label}</span>
+      {hint && <span className="tabular text-[0.8125rem] text-white/35">{hint}</span>}
+      <ChevronLeft className="h-4 w-4 rotate-180 text-white/25" />
     </button>
   )
 }

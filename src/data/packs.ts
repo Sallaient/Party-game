@@ -8,9 +8,10 @@ export interface PackMeta {
   id: PackId
   name: Localized
   tagline: Localized
-  emoji: string
-  /** Tailwind gradient used for the pack tile and its cards. */
-  gradient: string
+  /** Single flat colour, used for the pack's cards and its swatch. */
+  color: string
+  /** Typographic mark shown in the swatch, in place of an icon. */
+  mark: string
   adult: boolean
   cards: CardDef[]
 }
@@ -20,11 +21,11 @@ export const PACKS: PackMeta[] = [
     id: 'classique',
     name: { fr: 'Classique', en: 'Classic' },
     tagline: {
-      fr: "Pour lancer la soirée. Tout le monde peut jouer.",
+      fr: 'Pour lancer la soirée. Tout le monde peut jouer.',
       en: 'To get the night going. Everyone can play.',
     },
-    emoji: '🍻',
-    gradient: 'from-sky-500 via-indigo-500 to-violet-600',
+    color: '#2F4FE0',
+    mark: 'I',
     adult: false,
     cards: classique,
   },
@@ -35,8 +36,8 @@ export const PACKS: PackMeta[] = [
       fr: 'Chronos, règles qui durent et jeux de groupe.',
       en: 'Timers, lasting rules and group games.',
     },
-    emoji: '🎯',
-    gradient: 'from-emerald-400 via-teal-500 to-cyan-600',
+    color: '#0E8A5F',
+    mark: 'II',
     adult: false,
     cards: defis,
   },
@@ -47,8 +48,8 @@ export const PACKS: PackMeta[] = [
       fr: 'Ça chauffe. Réservé aux adultes consentants.',
       en: 'Things heat up. Consenting adults only.',
     },
-    emoji: '🔥',
-    gradient: 'from-rose-500 via-pink-600 to-fuchsia-600',
+    color: '#C3286B',
+    mark: 'III',
     adult: true,
     cards: hot,
   },
@@ -59,8 +60,8 @@ export const PACKS: PackMeta[] = [
       fr: 'Gorgées XXL et gages sans pitié. Buvez responsable.',
       en: 'XXL sips and merciless dares. Drink responsibly.',
     },
-    emoji: '💀',
-    gradient: 'from-orange-500 via-red-600 to-rose-700',
+    color: '#D2401E',
+    mark: 'IV',
     adult: true,
     cards: hardcore,
   },
@@ -71,8 +72,8 @@ export const PACKS: PackMeta[] = [
       fr: 'Les cartes que vous écrivez vous-mêmes.',
       en: 'The cards you write yourselves.',
     },
-    emoji: '✍️',
-    gradient: 'from-amber-400 via-orange-500 to-amber-600',
+    color: '#6B4FD8',
+    mark: 'V',
     adult: false,
     cards: [],
   },
@@ -80,11 +81,10 @@ export const PACKS: PackMeta[] = [
 
 export const PACK_BY_ID = new Map(PACKS.map((pack) => [pack.id, pack]))
 
-export function packGradient(id: PackId): string {
-  return PACK_BY_ID.get(id)?.gradient ?? 'from-slate-600 to-slate-800'
+export function packColor(id: PackId): string {
+  return PACK_BY_ID.get(id)?.color ?? '#2B2B33'
 }
 
-/** Card counts, used on the pack picker. Custom cards are counted at runtime. */
-export function builtInCardCount(id: PackId): number {
-  return PACK_BY_ID.get(id)?.cards.length ?? 0
+export function packName(id: PackId): Localized {
+  return PACK_BY_ID.get(id)?.name ?? { fr: '', en: '' }
 }

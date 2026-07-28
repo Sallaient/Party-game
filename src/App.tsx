@@ -34,7 +34,7 @@ export function App() {
   }, [players.length])
 
   return (
-    <div className="aurora h-full w-full overflow-hidden">
+    <div className="h-full w-full overflow-hidden">
       <AnimatePresence mode="wait">
         {screen === 'home' && (
           <HomeScreen key="home" go={go} onPlay={startGame} canPlay={canPlay} />

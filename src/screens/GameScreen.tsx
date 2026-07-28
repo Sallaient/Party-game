@@ -5,6 +5,7 @@ import { advance, createGame, currentTurn, rewind, type GameState } from '../gam
 import { GameCard } from '../components/GameCard'
 import { RuleBanner } from '../components/RuleBanner'
 import { Modal } from '../components/Modal'
+import { ChevronLeft, Close } from '../components/Icon'
 
 export function GameScreen({ onQuit }: { onQuit: () => void }) {
   const { s, players, packs, customCards, buzz } = useApp()
@@ -46,9 +47,9 @@ export function GameScreen({ onQuit }: { onQuit: () => void }) {
 
   if (!turn) {
     return (
-      <div className="screen items-center justify-center gap-4 text-center">
-        <p className="text-lg font-semibold text-white/70">{s('gameEmptyDeck')}</p>
-        <button type="button" onClick={onQuit} className="btn-primary">
+      <div className="screen items-start justify-center gap-5">
+        <p className="text-[0.9375rem] leading-snug text-white/60">{s('gameEmptyDeck')}</p>
+        <button type="button" onClick={onQuit} className="btn-secondary">
           {s('back')}
         </button>
       </div>
@@ -57,38 +58,34 @@ export function GameScreen({ onQuit }: { onQuit: () => void }) {
 
   return (
     <div className="screen py-3">
-      <div className="flex shrink-0 items-center justify-between pb-3">
+      <div className="flex shrink-0 items-center pb-3">
         <button
           type="button"
           onClick={previous}
           disabled={state.index <= 0}
           aria-label={s('back')}
-          className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/70 transition active:scale-90 disabled:opacity-25"
+          className="icon-btn -ml-2"
         >
-          <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2}>
-            <path d="M15 5l-7 7 7 7" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+          <ChevronLeft />
         </button>
 
-        <span className="text-xs font-semibold uppercase tracking-[0.14em] text-white/40">
-          {s('gameCardCount')} {state.drawn}
+        <span className="tabular label flex-1 text-center text-white/35">
+          {s('gameCardCount')} {state.index + 1}
         </span>
 
         <button
           type="button"
           onClick={() => setConfirmQuit(true)}
           aria-label={s('gameQuit')}
-          className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/70 transition active:scale-90"
+          className="icon-btn -mr-2"
         >
-          <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2}>
-            <path d="M6 6l12 12M18 6L6 18" strokeLinecap="round" />
-          </svg>
+          <Close />
         </button>
       </div>
 
       <RuleBanner rules={turn.banner} />
 
-      <div className="flex min-h-0 flex-1 flex-col pb-4">
+      <div className="flex min-h-0 flex-1 flex-col pb-3">
         <AnimatePresence mode="wait">
           <GameCard
             key={turn.card.key}
@@ -100,13 +97,19 @@ export function GameScreen({ onQuit }: { onQuit: () => void }) {
         </AnimatePresence>
       </div>
 
+      <p className="label shrink-0 pb-2 text-center text-white/20">{s('gameTapToContinue')}</p>
+
       <Modal
         open={confirmQuit}
         onClose={() => setConfirmQuit(false)}
         title={s('gameQuitConfirm')}
         footer={
           <>
-            <button type="button" onClick={() => setConfirmQuit(false)} className="btn-ghost flex-1">
+            <button
+              type="button"
+              onClick={() => setConfirmQuit(false)}
+              className="btn-secondary flex-1"
+            >
               {s('cancel')}
             </button>
             <button type="button" onClick={onQuit} className="btn-primary flex-1">

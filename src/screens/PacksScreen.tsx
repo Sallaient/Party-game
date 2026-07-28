@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { motion } from 'framer-motion'
 import { useApp } from '../store/AppContext'
 import { ScreenBody, ScreenHeader } from '../components/Screen'
 import { Modal } from '../components/Modal'
+import { Check } from '../components/Icon'
 import { PACKS, type PackMeta } from '../data/packs'
 import type { PackId } from '../types'
 
@@ -34,58 +34,65 @@ export function PacksScreen({ onBack }: { onBack: () => void }) {
     <div className="screen">
       <ScreenHeader title={s('packsTitle')} onBack={onBack} backLabel={s('back')} />
       <ScreenBody>
-        <p className="mb-4 text-sm text-white/50">{s('packsSubtitle')}</p>
+        <p className="mb-5 text-[0.875rem] leading-snug text-white/45">{s('packsSubtitle')}</p>
 
-        <div className="min-h-0 flex-1 space-y-3 overflow-y-auto pb-4">
-          {PACKS.map((pack) => {
-            const selected = packs.includes(pack.id)
-            const count = cardCount(pack)
-            const empty = pack.id === 'perso' && count === 0
-            return (
-              <motion.button
-                key={pack.id}
-                type="button"
-                whileTap={{ scale: 0.975 }}
-                onClick={() => toggle(pack)}
-                disabled={empty}
-                aria-pressed={selected}
-                className={`relative w-full overflow-hidden rounded-3xl bg-gradient-to-br p-4 text-left
-                  transition disabled:opacity-40 ${pack.gradient}
-                  ${selected ? 'ring-2 ring-white' : 'opacity-70'}`}
-              >
-                <div className="pointer-events-none absolute inset-0 bg-black/25" />
-                <div className="relative flex items-start gap-3">
-                  <span className="text-3xl">{pack.emoji}</span>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-2">
-                      <h2 className="truncate font-bold">{L(pack.name)}</h2>
+        <div className="min-h-0 flex-1 overflow-y-auto pb-4">
+          <div className="surface divide-y divide-ink-800 overflow-hidden">
+            {PACKS.map((pack) => {
+              const selected = packs.includes(pack.id)
+              const count = cardCount(pack)
+              const empty = pack.id === 'perso' && count === 0
+              return (
+                <button
+                  key={pack.id}
+                  type="button"
+                  onClick={() => toggle(pack)}
+                  disabled={empty}
+                  aria-pressed={selected}
+                  className="flex w-full items-start gap-3.5 px-4 py-4 text-left transition-colors active:bg-ink-850 disabled:opacity-35"
+                >
+                  {/* Swatch carries the pack colour used by its cards in play. */}
+                  <span
+                    className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-[0.6875rem] font-bold tracking-wider"
+                    style={{
+                      backgroundColor: selected ? pack.color : 'transparent',
+                      boxShadow: selected ? 'none' : `inset 0 0 0 1px ${pack.color}`,
+                      color: selected ? '#fff' : pack.color,
+                    }}
+                  >
+                    {pack.mark}
+                  </span>
+
+                  <span className="min-w-0 flex-1">
+                    <span className="flex items-center gap-2">
+                      <span className="truncate text-[0.9375rem] font-medium">{L(pack.name)}</span>
                       {pack.adult && (
-                        <span className="rounded-full bg-black/40 px-2 py-0.5 text-[0.65rem] font-black">
+                        <span className="label shrink-0 rounded border border-ink-600 px-1 py-0.5 text-white/40">
                           {s('adultBadge')}
                         </span>
                       )}
-                    </div>
-                    <p className="mt-0.5 text-xs leading-snug text-white/80">
+                    </span>
+                    {/* Taglines wrap rather than truncate: a half-sentence tells
+                        the group nothing about what they are turning on. */}
+                    <span className="mt-1 block text-[0.8125rem] leading-snug text-white/40">
                       {empty ? s('packsEmptyCustom') : L(pack.tagline)}
-                    </p>
-                    <p className="mt-1.5 text-[0.7rem] font-semibold uppercase tracking-wide text-white/60">
+                    </span>
+                    <span className="tabular label mt-2 block text-white/25">
                       {n(count, 'unitCardOne', 'unitCardMany')}
-                    </p>
-                  </div>
-                  <span
-                    className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2
-                      ${selected ? 'border-white bg-white text-night-900' : 'border-white/50'}`}
-                  >
-                    {selected && (
-                      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={3}>
-                        <path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    )}
+                    </span>
                   </span>
-                </div>
-              </motion.button>
-            )
-          })}
+
+                  <span
+                    className={`flex h-5 w-5 shrink-0 items-center justify-center rounded border ${
+                      selected ? 'border-bone bg-bone text-ink-950' : 'border-ink-600'
+                    }`}
+                  >
+                    {selected && <Check className="h-3.5 w-3.5" />}
+                  </span>
+                </button>
+              )
+            })}
+          </div>
         </div>
 
         <button
@@ -101,10 +108,10 @@ export function PacksScreen({ onBack }: { onBack: () => void }) {
       <Modal
         open={gateFor !== null}
         onClose={() => setGateFor(null)}
-        title={`🔞 ${s('adultGateTitle')}`}
+        title={s('adultGateTitle')}
         footer={
           <>
-            <button type="button" onClick={() => setGateFor(null)} className="btn-ghost flex-1">
+            <button type="button" onClick={() => setGateFor(null)} className="btn-secondary flex-1">
               {s('cancel')}
             </button>
             <button type="button" onClick={confirmAdult} className="btn-primary flex-1">

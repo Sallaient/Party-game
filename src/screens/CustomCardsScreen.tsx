@@ -3,18 +3,20 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useApp } from '../store/AppContext'
 import { ScreenBody, ScreenHeader } from '../components/Screen'
 import { Modal } from '../components/Modal'
+import { Minus, Plus, Trash } from '../components/Icon'
 import { countPlaceholders } from '../game/template'
+import { packColor } from '../data/packs'
 import type { CardKind, CustomCard } from '../types'
 import type { StringKey } from '../i18n/strings'
 
-const KINDS: { kind: CardKind; label: StringKey; emoji: string }[] = [
-  { kind: 'action', label: 'kindAction', emoji: '⚡' },
-  { kind: 'question', label: 'kindQuestion', emoji: '💬' },
-  { kind: 'duel', label: 'kindDuel', emoji: '⚔️' },
-  { kind: 'group', label: 'kindGroup', emoji: '👯' },
-  { kind: 'rule', label: 'kindRule', emoji: '📜' },
-  { kind: 'timer', label: 'kindTimer', emoji: '⏱️' },
-  { kind: 'minigame', label: 'kindMinigame', emoji: '🎲' },
+const KINDS: { kind: CardKind; label: StringKey }[] = [
+  { kind: 'action', label: 'kindAction' },
+  { kind: 'question', label: 'kindQuestion' },
+  { kind: 'duel', label: 'kindDuel' },
+  { kind: 'group', label: 'kindGroup' },
+  { kind: 'rule', label: 'kindRule' },
+  { kind: 'timer', label: 'kindTimer' },
+  { kind: 'minigame', label: 'kindMinigame' },
 ]
 
 const emptyDraft = (lang: CustomCard['lang']): CustomCard => ({
@@ -76,75 +78,79 @@ export function CustomCardsScreen({ onBack }: { onBack: () => void }) {
               setError(null)
             }}
             aria-label={s('customNew')}
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-night-950 transition active:scale-90"
+            className="icon-btn -mr-2 text-white/70"
           >
-            <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2.5}>
-              <path d="M12 5v14M5 12h14" strokeLinecap="round" />
-            </svg>
+            <Plus />
           </button>
         }
       />
       <ScreenBody>
-        <p className="mb-4 text-sm text-white/50">{s('customSubtitle')}</p>
+        <p className="mb-5 text-[0.875rem] leading-snug text-white/45">{s('customSubtitle')}</p>
 
-        <div className="min-h-0 flex-1 space-y-2 overflow-y-auto pb-4">
-          {customCards.length === 0 && (
-            <div className="surface flex flex-col items-center gap-3 p-8 text-center">
-              <span className="text-4xl">✍️</span>
-              <p className="text-sm text-white/50">{s('customEmpty')}</p>
+        <div className="min-h-0 flex-1 overflow-y-auto pb-4">
+          {customCards.length === 0 ? (
+            <div className="surface px-5 py-10 text-center">
+              <p className="text-[0.875rem] text-white/45">{s('customEmpty')}</p>
               <button
                 type="button"
                 onClick={() => setDraft(emptyDraft(settings.lang))}
-                className="btn-ghost"
+                className="btn-secondary mt-4"
               >
                 {s('customNew')}
               </button>
             </div>
-          )}
-
-          <AnimatePresence initial={false}>
-            {customCards.map((card) => {
-              const meta = KINDS.find((entry) => entry.kind === card.kind)
-              return (
-                <motion.div
-                  key={card.id}
-                  layout
-                  initial={{ opacity: 0, y: -8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, x: 24, height: 0, marginBottom: 0 }}
-                  transition={{ duration: 0.18 }}
-                  className="surface flex items-start gap-3 p-4"
-                >
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setDraft(card)
-                      setError(null)
-                    }}
-                    className="min-w-0 flex-1 text-left"
-                  >
-                    <span className="text-[0.65rem] font-bold uppercase tracking-[0.14em] text-white/40">
-                      {meta?.emoji} {s(meta?.label ?? 'kindAction')}
-                    </span>
-                    <p className="mt-1 text-sm leading-snug">{card.text}</p>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setPendingDelete(card.id)}
-                    aria-label={s('delete')}
-                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-white/35 transition active:scale-90 active:bg-white/10"
-                  >
-                    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2}>
-                      <path d="M4 7h16M9 7V5h6v2M6 7l1 13h10l1-13" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </button>
-                </motion.div>
-              )
-            })}
-          </AnimatePresence>
-
-          {customCards.length > 0 && (
-            <p className="px-1 pt-2 text-xs text-white/30">{s('customPlaceholderHint')}</p>
+          ) : (
+            <>
+              <ul className="surface divide-y divide-ink-800 overflow-hidden">
+                <AnimatePresence initial={false}>
+                  {customCards.map((card) => {
+                    const meta = KINDS.find((entry) => entry.kind === card.kind)
+                    return (
+                      <motion.li
+                        key={card.id}
+                        layout
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.15 }}
+                        className="flex items-start gap-3 px-4 py-3.5"
+                      >
+                        <span
+                          className="mt-1 h-8 w-1 shrink-0 rounded-full"
+                          style={{ backgroundColor: packColor('perso') }}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setDraft(card)
+                            setError(null)
+                          }}
+                          className="min-w-0 flex-1 text-left"
+                        >
+                          <span className="label block text-white/35">
+                            {s(meta?.label ?? 'kindAction')}
+                          </span>
+                          <span className="mt-1.5 block text-[0.875rem] leading-snug">
+                            {card.text}
+                          </span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setPendingDelete(card.id)}
+                          aria-label={s('delete')}
+                          className="icon-btn -mr-1.5 h-8 w-8"
+                        >
+                          <Trash className="h-4 w-4" />
+                        </button>
+                      </motion.li>
+                    )
+                  })}
+                </AnimatePresence>
+              </ul>
+              <p className="px-1 pt-3 text-[0.75rem] leading-snug text-white/25">
+                {s('customPlaceholderHint')}
+              </p>
+            </>
           )}
         </div>
       </ScreenBody>
@@ -155,7 +161,7 @@ export function CustomCardsScreen({ onBack }: { onBack: () => void }) {
         title={editing ? s('customEdit') : s('customNew')}
         footer={
           <>
-            <button type="button" onClick={() => setDraft(null)} className="btn-ghost flex-1">
+            <button type="button" onClick={() => setDraft(null)} className="btn-secondary flex-1">
               {s('cancel')}
             </button>
             <button type="button" onClick={save} className="btn-primary flex-1">
@@ -165,9 +171,9 @@ export function CustomCardsScreen({ onBack }: { onBack: () => void }) {
         }
       >
         {draft && (
-          <div className="space-y-4">
+          <div className="space-y-5">
             <div>
-              <label htmlFor="card-text" className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-white/40">
+              <label htmlFor="card-text" className="label mb-2 block text-white/35">
                 {s('customTextLabel')}
               </label>
               <textarea
@@ -189,18 +195,16 @@ export function CustomCardsScreen({ onBack }: { onBack: () => void }) {
                     key={token}
                     type="button"
                     onClick={() => insertPlaceholder(token)}
-                    className="rounded-full bg-white/10 px-3 py-1.5 text-xs font-semibold transition active:scale-95"
+                    className="rounded border border-ink-700 px-2.5 py-1.5 font-mono text-[0.75rem] text-white/70 transition-colors active:bg-ink-800"
                   >
-                    + {token}
+                    {token}
                   </button>
                 ))}
               </div>
             </div>
 
             <div>
-              <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-white/40">
-                {s('customKindLabel')}
-              </span>
+              <span className="label mb-2 block text-white/35">{s('customKindLabel')}</span>
               <div className="flex flex-wrap gap-1.5">
                 {KINDS.map((entry) => (
                   <button
@@ -208,10 +212,13 @@ export function CustomCardsScreen({ onBack }: { onBack: () => void }) {
                     type="button"
                     onClick={() => setDraft({ ...draft, kind: entry.kind })}
                     aria-pressed={draft.kind === entry.kind}
-                    className={`rounded-full px-3 py-1.5 text-xs font-semibold transition active:scale-95
-                      ${draft.kind === entry.kind ? 'bg-white text-night-950' : 'bg-white/10 text-white/70'}`}
+                    className={`rounded border px-2.5 py-1.5 text-[0.75rem] font-medium transition-colors ${
+                      draft.kind === entry.kind
+                        ? 'border-bone bg-bone text-ink-950'
+                        : 'border-ink-700 text-white/60'
+                    }`}
                   >
-                    {entry.emoji} {s(entry.label)}
+                    {s(entry.label)}
                   </button>
                 ))}
               </div>
@@ -237,7 +244,7 @@ export function CustomCardsScreen({ onBack }: { onBack: () => void }) {
               />
             )}
 
-            {error && <p className="text-sm font-medium text-rose-300">{error}</p>}
+            {error && <p className="text-[0.8125rem] text-pack-hardcore">{error}</p>}
           </div>
         )}
       </Modal>
@@ -248,7 +255,11 @@ export function CustomCardsScreen({ onBack }: { onBack: () => void }) {
         title={s('customDeleteConfirm')}
         footer={
           <>
-            <button type="button" onClick={() => setPendingDelete(null)} className="btn-ghost flex-1">
+            <button
+              type="button"
+              onClick={() => setPendingDelete(null)}
+              className="btn-secondary flex-1"
+            >
               {s('cancel')}
             </button>
             <button
@@ -257,7 +268,7 @@ export function CustomCardsScreen({ onBack }: { onBack: () => void }) {
                 if (pendingDelete) removeCustomCard(pendingDelete)
                 setPendingDelete(null)
               }}
-              className="btn flex-1 bg-rose-500 text-white"
+              className="btn-danger flex-1"
             >
               {s('delete')}
             </button>
@@ -288,26 +299,24 @@ function NumberField({
   const clamp = (next: number) => Math.min(max, Math.max(min, next))
   return (
     <div>
-      <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-white/40">
-        {label}
-      </span>
-      <div className="flex items-center gap-3">
+      <span className="label mb-2 block text-white/35">{label}</span>
+      <div className="inline-flex items-center overflow-hidden rounded-lg border border-ink-700">
         <button
           type="button"
           onClick={() => onChange(clamp(value - step))}
           aria-label="-"
-          className="h-10 w-10 rounded-full bg-white/10 text-lg font-bold transition active:scale-90"
+          className="flex h-10 w-11 items-center justify-center text-white/60 transition-colors active:bg-ink-800"
         >
-          −
+          <Minus className="h-4 w-4" />
         </button>
-        <span className="min-w-[3ch] text-center text-lg font-bold tabular-nums">{value}</span>
+        <span className="tabular w-12 text-center text-[0.9375rem] font-semibold">{value}</span>
         <button
           type="button"
           onClick={() => onChange(clamp(value + step))}
           aria-label="+"
-          className="h-10 w-10 rounded-full bg-white/10 text-lg font-bold transition active:scale-90"
+          className="flex h-10 w-11 items-center justify-center text-white/60 transition-colors active:bg-ink-800"
         >
-          +
+          <Plus className="h-4 w-4" />
         </button>
       </div>
     </div>

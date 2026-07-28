@@ -1,13 +1,19 @@
 import { useEffect, useState } from 'react'
 import { useApp } from '../store/AppContext'
-import { ScreenBody, ScreenHeader } from '../components/Screen'
+import { ScreenBody, ScreenHeader, SectionLabel } from '../components/Screen'
 import { Modal } from '../components/Modal'
+import { Download, Lock, Unlock } from '../components/Icon'
 import type { Lang } from '../types'
 
 /** The event Chromium fires when the app is installable. */
 interface InstallPromptEvent extends Event {
   prompt: () => Promise<void>
 }
+
+const LANGUAGES: { code: Lang; label: string }[] = [
+  { code: 'fr', label: 'Français' },
+  { code: 'en', label: 'English' },
+]
 
 export function SettingsScreen({ onBack }: { onBack: () => void }) {
   const { s, settings, setLang, setHaptics, resetAll, buzz } = useApp()
@@ -27,18 +33,11 @@ export function SettingsScreen({ onBack }: { onBack: () => void }) {
     <div className="screen">
       <ScreenHeader title={s('settingsTitle')} onBack={onBack} backLabel={s('back')} />
       <ScreenBody>
-        <div className="min-h-0 flex-1 space-y-3 overflow-y-auto pb-6">
-          <section className="surface p-4">
-            <h2 className="mb-3 text-xs font-bold uppercase tracking-[0.14em] text-white/40">
-              {s('settingsLang')}
-            </h2>
-            <div className="grid grid-cols-2 gap-2">
-              {(
-                [
-                  { code: 'fr', label: 'Français', flag: '🇫🇷' },
-                  { code: 'en', label: 'English', flag: '🇬🇧' },
-                ] as { code: Lang; label: string; flag: string }[]
-              ).map((option) => (
+        <div className="min-h-0 flex-1 space-y-6 overflow-y-auto pb-6">
+          <section>
+            <SectionLabel>{s('settingsLang')}</SectionLabel>
+            <div className="surface flex overflow-hidden p-1">
+              {LANGUAGES.map((option) => (
                 <button
                   key={option.code}
                   type="button"
@@ -47,71 +46,83 @@ export function SettingsScreen({ onBack }: { onBack: () => void }) {
                     buzz(10)
                   }}
                   aria-pressed={settings.lang === option.code}
-                  className={`btn ${
-                    settings.lang === option.code
-                      ? 'bg-white text-night-950'
-                      : 'bg-white/10 text-white/70'
+                  className={`flex-1 rounded-md py-2.5 text-[0.875rem] font-medium transition-colors ${
+                    settings.lang === option.code ? 'bg-bone text-ink-950' : 'text-white/50'
                   }`}
                 >
-                  {option.flag} {option.label}
+                  {option.label}
                 </button>
               ))}
             </div>
           </section>
 
-          <section className="surface flex items-center gap-4 p-4">
-            <div className="flex-1">
-              <h2 className="font-semibold">{s('settingsHaptics')}</h2>
-              <p className="mt-0.5 text-xs text-white/40">{s('settingsHapticsHint')}</p>
-            </div>
-            <Toggle
-              checked={settings.haptics}
-              label={s('settingsHaptics')}
-              onChange={(next) => {
-                setHaptics(next)
-                if (next) navigator.vibrate?.(15)
-              }}
-            />
-          </section>
+          <section>
+            <SectionLabel>{s('settingsPrefs')}</SectionLabel>
+            <div className="surface divide-y divide-ink-800">
+              <div className="flex items-center gap-4 px-4 py-3.5">
+                <div className="flex-1">
+                  <p className="text-[0.9375rem] font-medium">{s('settingsHaptics')}</p>
+                  <p className="mt-0.5 text-[0.8125rem] leading-snug text-white/35">
+                    {s('settingsHapticsHint')}
+                  </p>
+                </div>
+                <Toggle
+                  checked={settings.haptics}
+                  label={s('settingsHaptics')}
+                  onChange={(next) => {
+                    setHaptics(next)
+                    if (next) navigator.vibrate?.(15)
+                  }}
+                />
+              </div>
 
-          <section className="surface flex items-center gap-4 p-4">
-            <div className="flex-1">
-              <h2 className="font-semibold">{s('settingsAdult')}</h2>
+              <div className="flex items-center gap-4 px-4 py-3.5">
+                <p className="flex-1 text-[0.9375rem] font-medium">{s('settingsAdult')}</p>
+                <span className="text-white/40">
+                  {settings.adultUnlocked ? <Unlock /> : <Lock />}
+                </span>
+              </div>
             </div>
-            <span className="text-2xl">{settings.adultUnlocked ? '🔓' : '🔒'}</span>
           </section>
 
           {installEvent && (
-            <section className="surface p-4">
-              <h2 className="font-semibold">{s('settingsInstall')}</h2>
-              <p className="mt-0.5 text-xs text-white/40">{s('settingsInstallHint')}</p>
-              <button
-                type="button"
-                onClick={async () => {
-                  await installEvent.prompt()
-                  setInstallEvent(null)
-                }}
-                className="btn-ghost mt-3 w-full"
-              >
-                📲 {s('settingsInstall')}
-              </button>
+            <section>
+              <SectionLabel>{s('settingsInstall')}</SectionLabel>
+              <div className="surface p-4">
+                <p className="text-[0.8125rem] leading-snug text-white/45">
+                  {s('settingsInstallHint')}
+                </p>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    await installEvent.prompt()
+                    setInstallEvent(null)
+                  }}
+                  className="btn-secondary mt-3 w-full"
+                >
+                  <Download className="h-[1.125rem] w-[1.125rem]" />
+                  {s('settingsInstall')}
+                </button>
+              </div>
             </section>
           )}
 
-          <section className="surface p-4">
-            <h2 className="mb-1 text-xs font-bold uppercase tracking-[0.14em] text-white/40">
-              {s('settingsAbout')}
-            </h2>
-            <p className="text-sm text-white/60">{s('settingsAboutBody')}</p>
-            <p className="mt-3 rounded-2xl border border-white/10 bg-white/5 p-3 text-xs leading-relaxed text-white/50">
-              ⚠️ {s('howToSafety')}
-            </p>
+          <section>
+            <SectionLabel>{s('settingsAbout')}</SectionLabel>
+            <div className="surface p-4">
+              <p className="text-[0.875rem] leading-relaxed text-white/55">
+                {s('settingsAboutBody')}
+              </p>
+              <p className="mt-3 border-l-2 border-ink-700 pl-3 text-[0.8125rem] leading-relaxed text-white/40">
+                {s('howToSafety')}
+              </p>
+            </div>
           </section>
 
           <button
             type="button"
             onClick={() => setConfirmReset(true)}
-            className="btn w-full bg-rose-500/15 text-rose-300"
+            className="btn-danger w-full"
           >
             {s('settingsReset')}
           </button>
@@ -124,7 +135,11 @@ export function SettingsScreen({ onBack }: { onBack: () => void }) {
         title={s('settingsResetConfirm')}
         footer={
           <>
-            <button type="button" onClick={() => setConfirmReset(false)} className="btn-ghost flex-1">
+            <button
+              type="button"
+              onClick={() => setConfirmReset(false)}
+              className="btn-secondary flex-1"
+            >
               {s('cancel')}
             </button>
             <button
@@ -134,7 +149,7 @@ export function SettingsScreen({ onBack }: { onBack: () => void }) {
                 setConfirmReset(false)
                 onBack()
               }}
-              className="btn flex-1 bg-rose-500 text-white"
+              className="btn-danger flex-1"
             >
               {s('settingsReset')}
             </button>
@@ -163,13 +178,13 @@ function Toggle({
       aria-checked={checked}
       aria-label={label}
       onClick={() => onChange(!checked)}
-      className={`relative h-7 w-12 shrink-0 rounded-full transition ${
-        checked ? 'bg-emerald-400' : 'bg-white/15'
+      className={`relative h-6 w-10 shrink-0 rounded-full transition-colors ${
+        checked ? 'bg-bone' : 'bg-ink-700'
       }`}
     >
       <span
-        className={`absolute top-1 h-5 w-5 rounded-full bg-white transition-all ${
-          checked ? 'left-6' : 'left-1'
+        className={`absolute top-1 h-4 w-4 rounded-full transition-all ${
+          checked ? 'left-5 bg-ink-950' : 'left-1 bg-white/60'
         }`}
       />
     </button>

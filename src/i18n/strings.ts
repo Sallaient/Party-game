@@ -129,6 +129,7 @@ export const STRINGS = {
 
   // Settings
   settingsTitle: { fr: 'Réglages', en: 'Settings' },
+  settingsPrefs: { fr: 'Préférences', en: 'Preferences' },
   settingsLang: { fr: 'Langue', en: 'Language' },
   settingsHaptics: { fr: 'Vibrations', en: 'Haptics' },
   settingsHapticsHint: {

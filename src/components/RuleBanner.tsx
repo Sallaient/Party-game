@@ -12,23 +12,23 @@ export function RuleBanner({ rules }: { rules: ActiveRule[] }) {
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 'auto' }}
           exit={{ opacity: 0, height: 0 }}
-          transition={{ duration: 0.2 }}
+          transition={{ duration: 0.18 }}
           className="shrink-0 overflow-hidden"
         >
-          <div className="mb-3 space-y-1.5 rounded-2xl border border-amber-300/25 bg-amber-300/10 p-3">
-            <p className="text-[0.65rem] font-bold uppercase tracking-[0.16em] text-amber-200/80">
-              📜 {s('gameRules')}
-            </p>
-            {rules.map((rule) => (
-              <div key={rule.key} className="flex items-start gap-2">
-                <p className="flex-1 text-sm font-medium leading-snug text-amber-50">
-                  {L(rule.text)}
-                </p>
-                <span className="mt-0.5 shrink-0 rounded-full bg-amber-300/20 px-2 py-0.5 text-[0.7rem] font-bold tabular-nums text-amber-100">
-                  {rule.remaining}
-                </span>
-              </div>
-            ))}
+          <div className="mb-3 rounded-lg border border-ink-800 bg-ink-900 px-3.5 py-3">
+            <p className="label mb-2.5 text-white/35">{s('gameRules')}</p>
+            <ul className="space-y-2">
+              {rules.map((rule) => (
+                <li key={rule.key} className="flex items-start gap-3">
+                  <span className="flex-1 text-[0.8125rem] leading-snug text-white/80">
+                    {L(rule.text)}
+                  </span>
+                  <span className="tabular label mt-0.5 shrink-0 text-white/35">
+                    {rule.remaining}
+                  </span>
+                </li>
+              ))}
+            </ul>
           </div>
         </motion.div>
       )}

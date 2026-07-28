@@ -21,8 +21,8 @@ export default defineConfig({
         description:
           'Jeu de soirée à un seul téléphone : cartes, défis, gages et règles. A one-phone party game with cards, dares and rules.',
         lang: 'fr',
-        theme_color: '#0b0a1f',
-        background_color: '#0b0a1f',
+        theme_color: '#0B0B0D',
+        background_color: '#0B0B0D',
         display: 'standalone',
         orientation: 'portrait',
         start_url: base,

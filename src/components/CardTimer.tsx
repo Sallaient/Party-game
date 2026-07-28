@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useApp } from '../store/AppContext'
+import { Timer as TimerIcon } from './Icon'
 
 interface Props {
   /** Countdown length. Changing it (i.e. a new card) resets the timer. */
@@ -43,46 +44,40 @@ export function CardTimer({ seconds, cardKey }: Props) {
 
   const finished = !running && remaining === 0
   const progress = seconds > 0 ? remaining / seconds : 0
-  const circumference = 2 * Math.PI * 34
 
   return (
     <div
-      className="flex flex-col items-center gap-3"
+      className="flex flex-col gap-2.5"
       onClick={(event) => event.stopPropagation()}
       onPointerDownCapture={(event) => event.stopPropagation()}
     >
       {running || finished ? (
-        <div className="relative flex h-24 w-24 items-center justify-center">
-          <svg viewBox="0 0 80 80" className="absolute h-full w-full -rotate-90">
-            <circle cx="40" cy="40" r="34" fill="none" stroke="rgba(0,0,0,0.25)" strokeWidth="6" />
-            <circle
-              cx="40"
-              cy="40"
-              r="34"
-              fill="none"
-              stroke="white"
-              strokeWidth="6"
-              strokeLinecap="round"
-              strokeDasharray={circumference}
-              strokeDashoffset={circumference * (1 - progress)}
-              style={{ transition: 'stroke-dashoffset 200ms linear' }}
+        <>
+          <div className="flex items-baseline justify-between">
+            <span className="label text-white/70">
+              {finished ? s('gameTimerDone') : s('kindTimer')}
+            </span>
+            <span className="tabular text-[2.5rem] font-bold leading-none -tracking-[0.02em]">
+              {remaining}
+            </span>
+          </div>
+          {/* A straight bar, not a ring: it reads at a glance across a table. */}
+          <div className="h-1 w-full overflow-hidden rounded-full bg-black/25">
+            <div
+              className="h-full bg-white"
+              style={{ width: `${progress * 100}%`, transition: 'width 200ms linear' }}
             />
-          </svg>
-          <span className="text-3xl font-black tabular-nums">{remaining}</span>
-        </div>
+          </div>
+        </>
       ) : (
-        <button type="button" onClick={start} className="btn bg-black/25 text-white backdrop-blur">
-          <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2}>
-            <circle cx="12" cy="13" r="8" />
-            <path d="M12 9v4l2.5 2M9 2h6" strokeLinecap="round" />
-          </svg>
+        <button
+          type="button"
+          onClick={start}
+          className="btn w-full border border-white/30 bg-black/15 text-white active:bg-black/25"
+        >
+          <TimerIcon className="h-[1.125rem] w-[1.125rem]" />
           {s('gameStartTimer')} · {seconds}s
         </button>
-      )}
-      {finished && (
-        <p className="animate-pop-in text-sm font-bold uppercase tracking-wide">
-          {s('gameTimerDone')}
-        </p>
       )}
     </div>
   )

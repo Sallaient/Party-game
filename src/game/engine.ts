@@ -20,8 +20,6 @@ export interface GameState {
   index: number
   /** Recently targeted players, used to spread the pain around. */
   recent: string[]
-  /** Total cards drawn since the game started, shown as a counter. */
-  drawn: number
 }
 
 export function customToCardDef(card: CustomCard): CardDef {
@@ -72,7 +70,6 @@ export function createGame(
     turns: [],
     index: -1,
     recent: [],
-    drawn: 0,
   }
 }
 
@@ -132,7 +129,6 @@ export function advance(state: GameState, customCards: CustomCard[]): GameState 
     turns: [...state.turns, turn],
     index: state.turns.length,
     recent: [...state.recent, ...card.players].slice(-12),
-    drawn: state.drawn + 1,
   }
 }
 

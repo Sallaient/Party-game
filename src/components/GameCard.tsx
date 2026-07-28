@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import { motion } from 'framer-motion'
 import type { CardKind, DrawnCard } from '../types'
-import { packGradient } from '../data/packs'
+import { packColor, packName } from '../data/packs'
 import { useApp } from '../store/AppContext'
 import type { StringKey } from '../i18n/strings'
 import { CardTimer } from './CardTimer'
@@ -16,22 +16,15 @@ const KIND_LABEL: Record<CardKind, StringKey> = {
   minigame: 'kindMinigame',
 }
 
-const KIND_EMOJI: Record<CardKind, string> = {
-  action: '⚡',
-  question: '💬',
-  duel: '⚔️',
-  group: '👯',
-  rule: '📜',
-  timer: '⏱️',
-  minigame: '🎲',
-}
-
-/** Long dares need to shrink so the card never scrolls. */
+/**
+ * Long dares step down so a card never scrolls. Sizes are a fixed scale rather
+ * than a fluid clamp, so two cards of similar length always look identical.
+ */
 function textSize(length: number): string {
-  if (length < 70) return 'text-[2rem] leading-[1.15]'
-  if (length < 120) return 'text-[1.6rem] leading-[1.2]'
-  if (length < 190) return 'text-[1.35rem] leading-[1.28]'
-  return 'text-[1.15rem] leading-[1.35]'
+  if (length < 70) return 'text-[2.125rem] leading-[1.1]'
+  if (length < 120) return 'text-[1.75rem] leading-[1.15]'
+  if (length < 190) return 'text-[1.375rem] leading-[1.25]'
+  return 'text-[1.125rem] leading-[1.4]'
 }
 
 interface Props {
@@ -54,12 +47,12 @@ export function GameCard({ card, onNext, onPrevious, canGoBack }: Props) {
       type="button"
       key={card.key}
       aria-label={text}
-      initial={{ opacity: 0, y: 26, scale: 0.94, rotate: -1.5 }}
-      animate={{ opacity: 1, y: 0, scale: 1, rotate: 0 }}
-      transition={{ type: 'spring', stiffness: 420, damping: 34 }}
+      initial={{ opacity: 0, y: 14 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
       drag="x"
       dragSnapToOrigin
-      dragElastic={0.14}
+      dragElastic={0.12}
       dragConstraints={{ left: 0, right: 0 }}
       onDragEnd={(_event, info) => {
         const goForward = info.offset.x < -70 || info.velocity.x < -520
@@ -73,50 +66,37 @@ export function GameCard({ card, onNext, onPrevious, canGoBack }: Props) {
         if (Date.now() - swipedAt.current < 400) return
         onNext()
       }}
-      className={`relative flex w-full flex-1 cursor-pointer touch-pan-y select-none flex-col
-        overflow-hidden rounded-[2rem] bg-gradient-to-br p-6 text-left shadow-2xl shadow-black/50
-        ${packGradient(card.def.pack)}`}
+      style={{ backgroundColor: packColor(card.def.pack) }}
+      className="flex w-full flex-1 cursor-pointer touch-pan-y select-none flex-col rounded-xl p-5 text-left"
     >
-      {/* Soft light sweep so the flat gradient reads as a physical card. */}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-white/15" />
-
-      <div className="relative flex items-center gap-2">
-        <span className="rounded-full bg-black/25 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.12em] backdrop-blur">
-          {KIND_EMOJI[kind]} {s(KIND_LABEL[kind])}
-        </span>
-        {kind === 'rule' && card.def.duration && (
-          <span className="rounded-full bg-black/25 px-3 py-1.5 text-xs font-bold backdrop-blur">
-            {card.def.duration} {s('gameTurnsLeft')}
-          </span>
-        )}
+      <div className="flex items-baseline justify-between gap-3">
+        <span className="label text-white/70">{L(packName(card.def.pack))}</span>
+        <span className="label text-white/70">{s(KIND_LABEL[kind])}</span>
       </div>
+      <div className="mt-3 h-px w-full bg-white/25" />
 
-      <div className="relative flex flex-1 items-center justify-center py-6">
-        <p className={`text-balance text-center font-extrabold drop-shadow-sm ${textSize(text.length)}`}>
-          {text}
-        </p>
+      <div className="flex flex-1 items-center justify-center py-6">
+        <p className={`text-center font-bold -tracking-[0.02em] ${textSize(text.length)}`}>{text}</p>
       </div>
 
       {kind === 'timer' && card.def.seconds && (
-        <div className="relative pb-4">
+        <div className="pb-5">
           <CardTimer seconds={card.def.seconds} cardKey={card.key} />
         </div>
       )}
 
-      <div className="relative flex items-center justify-between gap-3">
-        <div className="flex flex-wrap gap-1.5">
-          {card.players.map((player) => (
-            <span
-              key={player}
-              className="rounded-full bg-black/25 px-2.5 py-1 text-xs font-semibold backdrop-blur"
-            >
-              {player}
-            </span>
-          ))}
-        </div>
-        <span className="shrink-0 text-xs font-medium uppercase tracking-wide text-white/70">
-          {s('gameTapToContinue')}
+      <div className="h-px w-full bg-white/25" />
+      <div className="mt-3 flex items-baseline justify-between gap-3">
+        {/* Names keep the casing the group typed: uppercasing them mangles
+            accented characters, and they are proper nouns, not metadata. */}
+        <span className="truncate text-[0.8125rem] font-semibold text-white/75">
+          {card.players.length > 0 ? card.players.join(' · ') : ' '}
         </span>
+        {kind === 'rule' && card.def.duration && (
+          <span className="label shrink-0 text-white/70">
+            {card.def.duration} {s('gameTurnsLeft')}
+          </span>
+        )}
       </div>
     </motion.button>
   )
