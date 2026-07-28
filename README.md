@@ -39,7 +39,37 @@ npm run preview    # serve the built bundle
 npm run check      # typecheck + card content validation
 ```
 
-Deploying to a GitHub Pages *project* site (served from a subpath):
+## Deploying
+
+### Vercel
+
+Import the repository from the Vercel dashboard — no CLI needed. `vercel.json`
+pins the build and the response headers, so the defaults do not need touching:
+
+- **Build** runs `npm run validate && npm run build`, so a card with a broken
+  placeholder or a missing translation fails the deploy instead of reaching the
+  table.
+- **`sw.js` and the manifest** are served `max-age=0, must-revalidate`. This is
+  the one header that really matters: if a CDN pins the service worker, clients
+  stay on the build they first saw and stop receiving updates.
+- **`/assets/*` and the Workbox runtime** are fingerprinted by the build, so
+  they are `immutable` for a year. Icons keep stable filenames and revalidate
+  daily instead.
+- **A strict CSP** (`default-src 'self'`, no external origins at all), plus
+  `nosniff`, `no-referrer`, and a `Permissions-Policy` denying camera,
+  microphone, geolocation, payment and USB. `'unsafe-inline'` is confined to
+  `style-src`, which React and Framer Motion require for style attributes.
+
+The default `base` of `/` is correct here; leave `BASE_PATH` unset.
+
+`Strict-Transport-Security` is set without `includeSubDomains` or `preload`. Add
+them if you attach a custom domain and own every subdomain of it — preload in
+particular is hard to reverse.
+
+### GitHub Pages
+
+A *project* site is served from a subpath, so the base has to be set at build
+time:
 
 ```bash
 BASE_PATH=/Party-game/ npm run build
