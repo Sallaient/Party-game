@@ -1,0 +1,91 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-night-950 text-white antialiased;
+    font-family:
+      ui-rounded,
+      'SF Pro Rounded',
+      system-ui,
+      -apple-system,
+      'Segoe UI',
+      Roboto,
+      sans-serif;
+    /* The game lives in one screen: never bounce or rubber-band. */
+    overscroll-behavior: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Respect notches and home indicators on phones. */
+  #root {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  button {
+    touch-action: manipulation;
+  }
+}
+
+@layer components {
+  .screen {
+    @apply mx-auto flex h-full w-full max-w-md flex-col px-5;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-4 text-base font-semibold
+      transition active:scale-[0.97] disabled:opacity-40 disabled:active:scale-100;
+  }
+
+  .btn-primary {
+    @apply btn bg-white text-night-950 shadow-lg shadow-black/30;
+  }
+
+  .btn-ghost {
+    @apply btn bg-white/10 text-white backdrop-blur;
+  }
+
+  .btn-quiet {
+    @apply btn bg-transparent text-white/60 hover:text-white;
+  }
+
+  .surface {
+    @apply rounded-3xl border border-white/10 bg-white/[0.06] backdrop-blur-xl;
+  }
+
+  .field {
+    @apply w-full rounded-2xl border border-white/10 bg-white/[0.06] px-4 py-3.5 text-base
+      text-white placeholder:text-white/35 outline-none transition
+      focus:border-white/30 focus:bg-white/10;
+  }
+}
+
+/* Animated aurora backdrop, cheap enough for a phone. */
+.aurora {
+  background-image:
+    radial-gradient(60% 45% at 15% 12%, rgba(129, 74, 255, 0.4) 0%, transparent 60%),
+    radial-gradient(55% 40% at 85% 8%, rgba(255, 74, 158, 0.32) 0%, transparent 60%),
+    radial-gradient(70% 55% at 50% 105%, rgba(46, 168, 255, 0.28) 0%, transparent 65%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
