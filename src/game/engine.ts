@@ -117,12 +117,17 @@ export function advance(state: GameState, customCards: CustomCard[]): GameState 
   const carry = [...banner]
   if (card.def.kind === 'rule') {
     ruleCounter += 1
-    carry.push({
+    const fresh = {
       key: `${card.def.id}-${ruleCounter}`,
       cardId: card.def.id,
       text: card.text,
       remaining: card.def.duration ?? null,
-    })
+    }
+    // The deck reshuffles, so a rule can come round again. Refresh it in place
+    // rather than stacking a second copy of the same rule on the banner.
+    const existing = carry.findIndex((rule) => rule.cardId === fresh.cardId)
+    if (existing === -1) carry.push(fresh)
+    else carry[existing] = fresh
   }
 
   const turn: Turn = { card, banner, carry }

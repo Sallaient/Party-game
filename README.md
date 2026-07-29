@@ -4,7 +4,7 @@ A Picolo-style drinking game as an installable, offline-first PWA. Put one phone
 in the middle of the table, one person reads the card out loud, the group does
 it, tap for the next one. Player names are injected straight into the cards.
 
-**29 cards**, every one written in both French and English.
+**49 cards**, every one written in both French and English.
 
 ## Features
 

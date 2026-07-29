@@ -57,7 +57,88 @@ export const classique = deck('classique', 'cl', [
     },
   },
 
+  // --- Questions perso -------------------------------------------------------
+  {
+    kind: 'question',
+    text: {
+      fr: '{p1} : raconte-nous ton pire mensonge et laisse le groupe décider de ta punition.',
+      en: '{p1}: tell us your worst lie and let the group decide your punishment.',
+    },
+  },
+  {
+    kind: 'question',
+    text: {
+      fr: '{p1} : quel est le compliment que tu as reçu qui t\'a fait le plus plaisir ? S\'il vient de quelqu\'un ici, cette personne distribue 2 gorgées.',
+      en: '{p1}: what is the best compliment you have ever received? If it came from someone here, they hand out 2 sips.',
+    },
+  },
+  {
+    kind: 'question',
+    text: {
+      fr: '{p1} : à quel âge as-tu eu ton premier baiser, et avec qui ?',
+      en: '{p1}: how old were you at your first kiss, and who was it with?',
+    },
+  },
+  {
+    kind: 'question',
+    text: {
+      fr: '{p1} : raconte-nous la dernière fois que tu as eu honte.',
+      en: '{p1}: tell us about the last time you were embarrassed.',
+    },
+  },
+  {
+    kind: 'question',
+    text: {
+      fr: '{p1} : partage-nous quelque chose qui te rend fier ou fière en ce moment.',
+      en: '{p1}: share something you are proud of right now.',
+    },
+  },
+  {
+    kind: 'question',
+    text: {
+      fr: '{p1} : cite trois personnes ici dans l\'ordre où tu les appellerais en cas d\'urgence. Les non-cités boivent 2 gorgées.',
+      en: '{p1}: name three people here in the order you would call them in an emergency. Those not named drink 2 sips.',
+    },
+  },
+  {
+    kind: 'question',
+    text: {
+      fr: '{p1} : partage-nous ton ou ta celebrity crush. Si la majorité n\'est pas d\'accord, tu bois 2 gorgées.',
+      en: '{p1}: share your celebrity crush. If the majority disagrees, you drink 2 sips.',
+    },
+  },
+
+  // --- Duels -----------------------------------------------------------------
+  {
+    kind: 'duel',
+    text: {
+      fr: '{p1} et {p2} comptent jusqu\'à 3 et affichent un nombre avec une main. Si c\'est le même, vous buvez tous les deux ce nombre en gorgées.',
+      en: '{p1} and {p2} count to 3 and hold up a number on one hand. Same number, you both drink that many sips.',
+    },
+  },
+  {
+    kind: 'duel',
+    text: {
+      fr: '{p1} et {p2} se tiennent sur un pied. Le premier qui pose l\'autre pied boit 3 gorgées.',
+      en: '{p1} and {p2} balance on one foot. First to put the other foot down drinks 3 sips.',
+    },
+  },
+
   // --- Gages -----------------------------------------------------------------
+  {
+    kind: 'action',
+    text: {
+      fr: '{p1} : raconte de manière très romancée comment tu as rencontré {p2}.',
+      en: '{p1}: tell the story of how you met {p2}, as romantically as you can.',
+    },
+  },
+  {
+    kind: 'action',
+    text: {
+      fr: '{p1} : remercie chaleureusement chaque joueur, personnellement. Ensuite, tout le monde boit une gorgée d\'émotion.',
+      en: '{p1}: thank every player warmly and personally. Then everyone drinks one emotional sip.',
+    },
+  },
   {
     kind: 'action',
     text: {
@@ -113,6 +194,14 @@ export const classique = deck('classique', 'cl', [
     kind: 'timer',
     seconds: 60,
     text: {
+      fr: "Interrogatoire : pendant 1 minute, tout le monde pose des questions à {p1}, qui ne doit donner que des réponses fausses. 3 gorgées par vérité qui s'échappe.",
+      en: 'Interrogation: for one minute, everyone questions {p1}, who may only give false answers. 3 sips for every truth that slips out.',
+    },
+  },
+  {
+    kind: 'timer',
+    seconds: 60,
+    text: {
       fr: 'Pictionary time ! {p1} fait deviner une action en dessinant. Le premier qui trouve distribue 3 gorgées. Personne au bout d\'une minute : {p1} boit 3 gorgées.',
       en: 'Pictionary time! {p1} draws an action for the group to guess. First to get it hands out 3 sips. Nobody after a minute: {p1} drinks 3 sips.',
     },
@@ -127,6 +216,20 @@ export const classique = deck('classique', 'cl', [
   },
 
   // --- Mini-jeux -------------------------------------------------------------
+  {
+    kind: 'minigame',
+    text: {
+      fr: 'Tour de table : chacun dit un mot pour décrire la soirée. Celui qui hésite ou répète boit 2 gorgées. {p1} commence.',
+      en: 'Around the table: everyone says one word to describe tonight. Whoever hesitates or repeats drinks 2 sips. {p1} starts.',
+    },
+  },
+  {
+    kind: 'minigame',
+    text: {
+      fr: 'Mot secret : {p1} pense à un mot et donne un indice par tour. Le premier qui trouve distribue 4 gorgées.',
+      en: 'Secret word: {p1} thinks of a word and gives one clue per turn. First to guess hands out 4 sips.',
+    },
+  },
   {
     kind: 'minigame',
     text: {
@@ -150,6 +253,20 @@ export const classique = deck('classique', 'cl', [
   },
 
   // --- Règles ----------------------------------------------------------------
+  {
+    kind: 'rule',
+    text: {
+      fr: "{p1}, tu es désormais lié(e) avec {p2} ! À chaque fois que l'un boit, il trinque avec l'autre, qui boit la même chose.",
+      en: '{p1}, you are now bound to {p2}! Every time one of you drinks, you clink glasses and the other drinks the same.',
+    },
+  },
+  {
+    kind: 'rule',
+    text: {
+      fr: '{p1} doit appeler tout le monde « mon amour » jusqu\'à nouvel ordre. 2 gorgées par oubli.',
+      en: '{p1} must call everyone "my love" until further notice. 2 sips per slip.',
+    },
+  },
   {
     kind: 'rule',
     duration: 5,
@@ -182,6 +299,34 @@ export const classique = deck('classique', 'cl', [
   },
 
   // --- Tout le monde ---------------------------------------------------------
+  {
+    kind: 'group',
+    text: {
+      fr: 'Levez la main si vous avez déjà pleuré devant un dessin animé. Les mains baissées boivent 2 gorgées.',
+      en: 'Hands up if you have ever cried at a cartoon. Hands down drink 2 sips.',
+    },
+  },
+  {
+    kind: 'group',
+    text: {
+      fr: "Si tout le monde décide de partir en voyage, qui oublie son passeport et regarde l'avion partir ?",
+      en: 'If everyone went travelling together, who forgets their passport and watches the plane leave?',
+    },
+  },
+  {
+    kind: 'group',
+    text: {
+      fr: 'Entre {p1} et {p2}, qui est le plus susceptible de finir en prison ? Cette personne boit 2 gorgées.',
+      en: 'Between {p1} and {p2}, who is most likely to end up in prison? That person drinks 2 sips.',
+    },
+  },
+  {
+    kind: 'group',
+    text: {
+      fr: "Dans un film, entre {p1} et {p2}, qui serait l'antagoniste ? Et de quoi parle le film ? Le grand méchant distribue 3 gorgées.",
+      en: 'In a movie, between {p1} and {p2}, who would be the villain? And what is the movie about? The bad guy hands out 3 sips.',
+    },
+  },
   {
     kind: 'group',
     text: {

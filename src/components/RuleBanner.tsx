@@ -15,7 +15,9 @@ export function RuleBanner({ rules }: { rules: ActiveRule[] }) {
           transition={{ duration: 0.18 }}
           className="shrink-0 overflow-hidden"
         >
-          <div className="mb-3 rounded-lg border border-ink-800 bg-ink-900 px-3.5 py-3">
+          {/* Permanent rules never expire, so the banner is capped and scrolls
+              internally. The card must keep its height whatever is stacked up. */}
+          <div className="mb-3 max-h-[26vh] overflow-y-auto rounded-lg border border-ink-800 bg-ink-900 px-3.5 py-3">
             <p className="label mb-2.5 text-white/35">{s('gameRules')}</p>
             <ul className="space-y-2">
               {rules.map((rule) => (
