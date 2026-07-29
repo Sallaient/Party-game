@@ -1,685 +1,236 @@
 import { deck } from './helpers'
 
 /**
- * Warm-up pack: safe, silly, everyone can play. No dare here should ever be
- * embarrassing enough that someone would rather leave the room.
+ * The deck. Cards carrying a `reveal` hide their answer behind a tap, so the
+ * person holding the phone cannot read it out by accident.
+ * Rule cards without a `duration` last the whole game.
  */
 export const classique = deck('classique', 'cl', [
-  // --- Sips & simple actions -------------------------------------------------
+  // --- Culture générale ------------------------------------------------------
   {
-    kind: 'action',
-    players: 1,
+    kind: 'question',
     text: {
-      fr: '{p1} boit 2 gorgées. Sans raison. La vie est injuste.',
-      en: '{p1} drinks 2 sips. No reason. Life is unfair.',
+      fr: '{p1} : trouve la distance Samoreau – Grenoble à 50 km près, ou bois 2 gorgées.',
+      en: '{p1}: guess the distance from Samoreau to Grenoble within 50 km, or drink 2 sips.',
+    },
+    reveal: { fr: '519 km', en: '519 km' },
+  },
+  {
+    kind: 'question',
+    text: {
+      fr: "{p1} : en quelle année le mariage pour tous a-t-il été légalisé ? Bonne réponse, tu distribues 2 gorgées. Mauvaise réponse, tu en bois le double, parce qu'on n'aime pas les homophobes ici.",
+      en: '{p1}: what year was same-sex marriage legalised in France? Right answer, hand out 2 sips. Wrong answer, drink double, because we do not like homophobes around here.',
+    },
+    reveal: {
+      fr: '2013. Bonus de 2 gorgées à distribuer si la date exacte tombe : le 12 février 2013.',
+      en: '2013. Bonus 2 sips to hand out for the exact date: 12 February 2013.',
     },
   },
   {
-    kind: 'action',
-    players: 1,
+    kind: 'question',
     text: {
-      fr: '{p1} distribue 3 gorgées comme bon lui semble.',
-      en: '{p1} hands out 3 sips however they like.',
+      fr: '{p1} : donne la capitale de la Finlande et distribue 2 gorgées. Sinon, bois-en 2.',
+      en: '{p1}: name the capital of Finland and hand out 2 sips. Otherwise, drink 2.',
+    },
+    reveal: { fr: 'Helsinki', en: 'Helsinki' },
+  },
+  {
+    kind: 'minigame',
+    text: {
+      fr: "Le premier à donner l'année de naissance de Mélenchon distribue 3 gorgées et remporte le titre de gaucho d'or.",
+      en: 'First to name the year Mélenchon was born hands out 3 sips and takes home the Golden Lefty award.',
+    },
+    reveal: { fr: '1951', en: '1951' },
+  },
+  {
+    kind: 'question',
+    text: {
+      fr: '{p1} : cite 3 dinosaures, ou bois 3 gorgées.',
+      en: '{p1}: name 3 dinosaurs, or drink 3 sips.',
     },
   },
   {
-    kind: 'action',
-    players: 2,
+    kind: 'question',
     text: {
-      fr: '{p1} et {p2} trinquent et boivent ensemble. Amitié scellée.',
-      en: '{p1} and {p2} clink glasses and drink together. Friendship sealed.',
-    },
-  },
-  {
-    kind: 'action',
-    players: 1,
-    text: {
-      fr: "{p1} choisit quelqu'un : vous buvez tous les deux 2 gorgées.",
-      en: '{p1} picks someone: you both drink 2 sips.',
-    },
-  },
-  {
-    kind: 'action',
-    players: 1,
-    text: {
-      fr: '{p1} fait un compliment sincère à la personne à sa gauche. Si elle rougit, elle boit.',
-      en: '{p1} gives a genuine compliment to the person on their left. If they blush, they drink.',
-    },
-  },
-  {
-    kind: 'action',
-    players: 1,
-    text: {
-      fr: '{p1} imite un autre joueur. Si personne ne devine qui, {p1} boit 2 gorgées.',
-      en: '{p1} imitates another player. If nobody guesses who, {p1} drinks 2 sips.',
-    },
-  },
-  {
-    kind: 'action',
-    players: 1,
-    text: {
-      fr: "{p1} raconte la pire excuse qu'il ou elle a déjà utilisée pour annuler un plan.",
-      en: '{p1} tells the worst excuse they have ever used to cancel plans.',
-    },
-  },
-  {
-    kind: 'action',
-    players: 1,
-    text: {
-      fr: "{p1} montre la dernière photo de sa galerie. Refus = 3 gorgées, et c'est louche.",
-      en: '{p1} shows the last photo in their camera roll. Refusing costs 3 sips, and it looks suspicious.',
-    },
-  },
-  {
-    kind: 'action',
-    players: 1,
-    text: {
-      fr: '{p1} lit à voix haute son dernier message envoyé. Avec le ton, sinon ça compte pas.',
-      en: '{p1} reads out their last sent message. With feeling, or it does not count.',
-    },
-  },
-  {
-    kind: 'action',
-    players: 1,
-    text: {
-      fr: '{p1} doit parler avec un accent de son choix jusqu\'à son prochain tour. Sinon, 2 gorgées.',
-      en: '{p1} must speak with an accent of their choice until their next turn. Otherwise, 2 sips.',
-    },
-  },
-  {
-    kind: 'action',
-    players: 1,
-    text: {
-      fr: '{p1} chante le refrain de la dernière chanson qu\'il ou elle a écoutée. Faux = 2 gorgées.',
-      en: '{p1} sings the chorus of the last song they listened to. Off-key = 2 sips.',
-    },
-  },
-  {
-    kind: 'action',
-    players: 1,
-    text: {
-      fr: '{p1} choisit un mot interdit pour tout le groupe. Celui qui le dit boit.',
-      en: '{p1} picks a forbidden word for the whole group. Whoever says it drinks.',
-    },
-  },
-  {
-    kind: 'action',
-    players: 2,
-    text: {
-      fr: '{p1} et {p2} échangent de place. {p2} boit une gorgée pour le dérangement.',
-      en: '{p1} and {p2} swap seats. {p2} drinks a sip for the inconvenience.',
-    },
-  },
-  {
-    kind: 'action',
-    players: 1,
-    text: {
-      fr: "{p1} donne son téléphone à son voisin de droite pendant 2 tours. Refus : 4 gorgées.",
-      en: '{p1} hands their phone to the person on their right for 2 turns. Refusing: 4 sips.',
-    },
-  },
-  {
-    kind: 'action',
-    players: 1,
-    text: {
-      fr: '{p1} fait deviner un film en mimant. Le premier qui trouve distribue 2 gorgées.',
-      en: '{p1} acts out a movie. First to guess hands out 2 sips.',
-    },
-  },
-  {
-    kind: 'action',
-    players: 1,
-    text: {
-      fr: '{p1} devient le DJ officiel : la prochaine chanson, c\'est lui ou elle qui la choisit.',
-      en: '{p1} becomes the official DJ: they pick the next song.',
-    },
-  },
-  {
-    kind: 'action',
-    players: 1,
-    text: {
-      fr: '{p1} annonce son plus gros mensonge de la soirée. Le groupe vote : vrai mensonge = tout le monde boit, sinon {p1} boit 3 gorgées.',
-      en: '{p1} confesses their biggest lie of the night. The group votes: real lie = everyone drinks, otherwise {p1} drinks 3 sips.',
-    },
-  },
-  {
-    kind: 'action',
-    players: 1,
-    text: {
-      fr: '{p1} refait la démarche de quelqu\'un dans la pièce. Si on reconnaît, la victime boit.',
-      en: '{p1} copies someone in the room walking. If we recognise them, the victim drinks.',
-    },
-  },
-  {
-    kind: 'action',
-    players: 2,
-    text: {
-      fr: '{p1} raconte comment il ou elle a rencontré {p2}. Version romancée obligatoire.',
-      en: '{p1} tells the story of how they met {p2}. Dramatic version required.',
-    },
-  },
-  {
-    kind: 'action',
-    players: 1,
-    text: {
-      fr: '{p1} doit remercier chaleureusement chaque joueur, un par un. Le groupe boit une gorgée à la fin.',
-      en: '{p1} warmly thanks every player, one by one. The group drinks a sip at the end.',
+      fr: '{p1} : cite les dates de naissance de tout le monde. 1 gorgée par erreur.',
+      en: '{p1}: recite everyone\'s birthday. 1 sip per mistake.',
     },
   },
 
-  // --- Questions -------------------------------------------------------------
+  // --- Gages -----------------------------------------------------------------
   {
-    kind: 'question',
-    players: 1,
+    kind: 'action',
     text: {
-      fr: '{p1} : quelle est la chose la plus chère que tu aies cassée ? Tu réponds ou tu bois 3 gorgées.',
-      en: '{p1}: what is the most expensive thing you have ever broken? Answer or drink 3 sips.',
+      fr: '{p1} : donne 2 € à la personne à ta droite, ou bois 5 gorgées.',
+      en: '{p1}: give €2 to the person on your right, or drink 5 sips.',
+    },
+  },
+  {
+    kind: 'action',
+    text: {
+      fr: '{p1} : au prochain tour, fais un tunnel rapide sur le sujet que tu veux.',
+      en: '{p1}: on the next turn, launch into a quick rant about whatever you like.',
     },
   },
   {
     kind: 'question',
-    players: 1,
     text: {
-      fr: '{p1} : ton pire souvenir de soirée ? Réponds, ou 3 gorgées.',
-      en: '{p1}: your worst party memory? Answer, or 3 sips.',
+      fr: '{p1} : raconte-nous en détail ton dernier caca, ou bois 2 gorgées.',
+      en: '{p1}: describe your last poo in detail, or drink 2 sips.',
     },
   },
   {
-    kind: 'question',
-    players: 1,
+    kind: 'action',
     text: {
-      fr: '{p1} : combien de personnes ici te suivent sur les réseaux et tu ne suis pas en retour ? Une gorgée par personne.',
-      en: '{p1}: how many people here follow you but you do not follow back? One sip each.',
+      fr: '{p1} : bois ton body count en gorgées.',
+      en: '{p1}: drink one sip per person on your body count.',
     },
   },
   {
-    kind: 'question',
-    players: 2,
+    kind: 'action',
     text: {
-      fr: '{p1} : qu\'est-ce que tu changerais chez {p2} ? Sois honnête. {p2} boit si ça pique.',
-      en: '{p1}: what would you change about {p2}? Be honest. {p2} drinks if it stings.',
+      fr: '{p1} : sors de la pièce, change un détail de ta tenue et reviens. Le premier qui trouve distribue 4 gorgées.',
+      en: '{p1}: leave the room, change one detail of your outfit and come back. First to spot it hands out 4 sips.',
     },
   },
   {
-    kind: 'question',
-    players: 1,
+    kind: 'action',
     text: {
-      fr: "{p1} : le talent inutile dont tu es le plus fier ? Prouve-le, sinon 2 gorgées.",
-      en: '{p1}: the useless talent you are proudest of? Prove it, or 2 sips.',
+      fr: '{p1} : choisis une couleur. Le premier qui touche un objet de cette couleur distribue 5 gorgées.',
+      en: '{p1}: pick a colour. First to touch an object of that colour hands out 5 sips.',
     },
   },
   {
-    kind: 'question',
-    players: 1,
+    kind: 'action',
     text: {
-      fr: '{p1} : dernier truc que tu as cherché sur internet ? Montre l\'écran ou bois 4 gorgées.',
-      en: '{p1}: last thing you searched online? Show the screen or drink 4 sips.',
-    },
-  },
-  {
-    kind: 'question',
-    players: 1,
-    text: {
-      fr: "{p1} : quelle est la règle que tu enfreins le plus souvent ? Une gorgée par récidive avouée.",
-      en: '{p1}: which rule do you break most often? One sip per confessed offence.',
-    },
-  },
-  {
-    kind: 'question',
-    players: 1,
-    text: {
-      fr: '{p1} : si tu devais partir vivre ailleurs demain, où ? Le groupe vote si c\'est crédible.',
-      en: '{p1}: if you had to move away tomorrow, where to? The group votes whether it is believable.',
-    },
-  },
-  {
-    kind: 'question',
-    players: 1,
-    text: {
-      fr: '{p1} : quel est ton plaisir coupable musical ? Le groupe rigole = 2 gorgées pour toi.',
-      en: '{p1}: what is your musical guilty pleasure? If the group laughs, 2 sips for you.',
-    },
-  },
-  {
-    kind: 'question',
-    players: 1,
-    text: {
-      fr: "{p1} : combien de temps as-tu passé sur ton téléphone aujourd'hui ? Une gorgée par heure.",
-      en: '{p1}: how much screen time today? One sip per hour.',
-    },
-  },
-  {
-    kind: 'question',
-    players: 1,
-    text: {
-      fr: "{p1} : cite trois personnes du groupe dans l'ordre où tu les appellerais en cas d'urgence. Les non-cités boivent.",
-      en: '{p1}: name three people here in the order you would call them in an emergency. Those not named drink.',
-    },
-  },
-  {
-    kind: 'question',
-    players: 1,
-    text: {
-      fr: '{p1} : quel est le pire cadeau que tu aies reçu, et de qui ?',
-      en: '{p1}: what is the worst gift you have ever received, and from whom?',
-    },
-  },
-  {
-    kind: 'question',
-    players: 1,
-    text: {
-      fr: "{p1} : si le groupe partait en road trip, qui oublierait son passeport ? Cette personne boit 2 gorgées.",
-      en: '{p1}: if the group went on a road trip, who would forget their passport? That person drinks 2 sips.',
-    },
-  },
-  {
-    kind: 'question',
-    players: 1,
-    text: {
-      fr: "{p1} : le mensonge que tu répètes le plus souvent au travail ou en cours ?",
-      en: '{p1}: the lie you tell most often at work or school?',
+      fr: '{p1} : mime une personne présente dans la pièce. Le premier qui trouve distribue 4 gorgées.',
+      en: '{p1}: mime someone in this room. First to guess hands out 4 sips.',
     },
   },
 
-  // --- Duels -----------------------------------------------------------------
-  {
-    kind: 'duel',
-    players: 2,
-    text: {
-      fr: 'Duel de regard : {p1} contre {p2}. Le premier qui rit ou détourne les yeux boit 3 gorgées.',
-      en: 'Staring contest: {p1} versus {p2}. First to laugh or look away drinks 3 sips.',
-    },
-  },
-  {
-    kind: 'duel',
-    players: 2,
-    text: {
-      fr: 'Pierre-feuille-ciseaux : {p1} contre {p2}. Le perdant boit 3 gorgées.',
-      en: 'Rock-paper-scissors: {p1} versus {p2}. Loser drinks 3 sips.',
-    },
-  },
-  {
-    kind: 'duel',
-    players: 2,
-    text: {
-      fr: '{p1} et {p2} citent chacun leur tour une marque de voiture. Le premier à bloquer boit 3 gorgées.',
-      en: '{p1} and {p2} take turns naming car brands. First to get stuck drinks 3 sips.',
-    },
-  },
-  {
-    kind: 'duel',
-    players: 2,
-    text: {
-      fr: '{p1} et {p2} : bras de fer. Le perdant boit 3 gorgées, le gagnant en distribue 2.',
-      en: '{p1} and {p2}: arm wrestle. Loser drinks 3 sips, winner hands out 2.',
-    },
-  },
-  {
-    kind: 'duel',
-    players: 2,
-    text: {
-      fr: '{p1} et {p2} comptent jusqu\'à 3 et montrent un nombre de doigts. Pareil = vous buvez tous les deux.',
-      en: '{p1} and {p2} count to 3 and hold up fingers. Same number = you both drink.',
-    },
-  },
-  {
-    kind: 'duel',
-    players: 2,
-    text: {
-      fr: '{p1} et {p2} : celui qui a le plus d\'applications ouvertes sur son téléphone boit 3 gorgées.',
-      en: '{p1} and {p2}: whoever has more apps open on their phone drinks 3 sips.',
-    },
-  },
-  {
-    kind: 'duel',
-    players: 2,
-    text: {
-      fr: 'Concours de blagues : {p1} contre {p2}. Le groupe désigne le moins drôle, qui boit 3 gorgées.',
-      en: 'Joke-off: {p1} versus {p2}. The group picks the least funny, who drinks 3 sips.',
-    },
-  },
-  {
-    kind: 'duel',
-    players: 2,
-    text: {
-      fr: '{p1} et {p2} : celui qui a le pourcentage de batterie le plus bas boit 2 gorgées. Et va se charger.',
-      en: '{p1} and {p2}: lowest battery percentage drinks 2 sips. And goes to charge.',
-    },
-  },
-  {
-    kind: 'duel',
-    players: 2,
-    text: {
-      fr: '{p1} et {p2} font une phrase en alternant un mot chacun. Celui qui casse la phrase boit.',
-      en: '{p1} and {p2} build a sentence one word each. Whoever breaks it drinks.',
-    },
-  },
-
-  // --- Groupe ----------------------------------------------------------------
-  {
-    kind: 'group',
-    players: 0,
-    text: {
-      fr: 'Tout le monde qui a déjà menti sur son âge boit 2 gorgées.',
-      en: 'Everyone who has ever lied about their age drinks 2 sips.',
-    },
-  },
-  {
-    kind: 'group',
-    players: 0,
-    text: {
-      fr: "Tout le monde qui a déjà fait semblant d'avoir vu un film culte boit.",
-      en: 'Everyone who has ever pretended to have seen a classic movie drinks.',
-    },
-  },
-  {
-    kind: 'group',
-    players: 0,
-    text: {
-      fr: 'Tout le monde qui a son téléphone à la main boit une gorgée. Maintenant.',
-      en: 'Everyone holding their phone right now drinks a sip. Right now.',
-    },
-  },
-  {
-    kind: 'group',
-    players: 0,
-    text: {
-      fr: "Le dernier à poser son doigt sur son nez boit 3 gorgées. Go.",
-      en: 'Last person to put a finger on their nose drinks 3 sips. Go.',
-    },
-  },
-  {
-    kind: 'group',
-    players: 0,
-    text: {
-      fr: 'Tout le monde qui porte du noir boit 2 gorgées.',
-      en: 'Everyone wearing black drinks 2 sips.',
-    },
-  },
-  {
-    kind: 'group',
-    players: 0,
-    text: {
-      fr: 'Le plus jeune du groupe distribue 3 gorgées. Privilège de la jeunesse.',
-      en: 'The youngest in the group hands out 3 sips. Perks of youth.',
-    },
-  },
-  {
-    kind: 'group',
-    players: 0,
-    text: {
-      fr: 'Le plus vieux du groupe boit 2 gorgées. Respect, mais quand même.',
-      en: 'The oldest in the group drinks 2 sips. Respect, but still.',
-    },
-  },
-  {
-    kind: 'group',
-    players: 0,
-    text: {
-      fr: "Tout le monde qui s'est déjà endormi pendant une soirée boit 3 gorgées.",
-      en: 'Everyone who has ever fallen asleep at a party drinks 3 sips.',
-    },
-  },
-  {
-    kind: 'group',
-    players: 0,
-    text: {
-      fr: 'Tout le monde qui a un ex dans son téléphone boit. Tout le monde qui lui a écrit ce mois-ci boit le double.',
-      en: 'Everyone with an ex in their phone drinks. Everyone who texted them this month drinks double.',
-    },
-  },
-  {
-    kind: 'group',
-    players: 0,
-    text: {
-      fr: 'Levez la main si vous avez déjà pleuré devant un dessin animé. Les mains baissées boivent.',
-      en: 'Hands up if you have cried at a cartoon. Hands down drink.',
-    },
-  },
-  {
-    kind: 'group',
-    players: 0,
-    text: {
-      fr: "Tout le monde qui n'a pas encore parlé depuis le début de la partie boit 2 gorgées.",
-      en: 'Everyone who has not spoken yet since the game started drinks 2 sips.',
-    },
-  },
-  {
-    kind: 'group',
-    players: 0,
-    text: {
-      fr: 'Santé générale : tout le monde boit une gorgée. Ambiance.',
-      en: 'Group toast: everyone drinks a sip. Vibes.',
-    },
-  },
-  {
-    kind: 'group',
-    players: 0,
-    text: {
-      fr: 'Tout le monde qui a déjà été viré ou recalé quelque part boit 2 gorgées. Racontez.',
-      en: 'Everyone who has ever been fired or rejected somewhere drinks 2 sips. Tell us.',
-    },
-  },
-  {
-    kind: 'group',
-    players: 0,
-    text: {
-      fr: "Chacun pointe la personne qui tient le moins l'alcool. La plus pointée boit 3 gorgées.",
-      en: 'Everyone points at whoever holds their drink worst. Most-pointed drinks 3 sips.',
-    },
-  },
-  {
-    kind: 'group',
-    players: 0,
-    text: {
-      fr: "Chacun pointe la personne la plus susceptible d'envoyer un message qu'elle regrettera. Elle boit 2 gorgées.",
-      en: 'Everyone points at who is most likely to send a text they will regret. They drink 2 sips.',
-    },
-  },
-  {
-    kind: 'group',
-    players: 0,
-    text: {
-      fr: 'Tour de table : chacun donne un mot pour décrire la soirée. Celui qui hésite boit.',
-      en: 'Around the table: everyone gives one word to describe tonight. Whoever hesitates drinks.',
-    },
-  },
-
-  // --- Règles ----------------------------------------------------------------
-  {
-    kind: 'rule',
-    players: 0,
-    duration: 6,
-    text: {
-      fr: 'Interdiction de dire "oui" et "non". Celui qui le dit boit 2 gorgées.',
-      en: 'Nobody may say "yes" or "no". Whoever slips drinks 2 sips.',
-    },
-  },
-  {
-    kind: 'rule',
-    players: 1,
-    duration: 5,
-    text: {
-      fr: '{p1} est le roi ou la reine. Tout le monde doit dire "Votre Majesté" en lui parlant, sinon 1 gorgée.',
-      en: '{p1} is king or queen. Everyone must say "Your Majesty" when speaking to them, or 1 sip.',
-    },
-  },
-  {
-    kind: 'rule',
-    players: 0,
-    duration: 5,
-    text: {
-      fr: 'Interdiction de prononcer un prénom. Utilisez des surnoms. Erreur = 2 gorgées.',
-      en: 'No first names allowed. Use nicknames. Slip up = 2 sips.',
-    },
-  },
-  {
-    kind: 'rule',
-    players: 1,
-    duration: 4,
-    text: {
-      fr: 'Quand {p1} boit, tout le monde boit. Pression sociale maximale.',
-      en: 'When {p1} drinks, everyone drinks. Maximum peer pressure.',
-    },
-  },
-  {
-    kind: 'rule',
-    players: 0,
-    duration: 5,
-    text: {
-      fr: 'Tout le monde boit de la main non dominante. Oubli = 2 gorgées.',
-      en: 'Everyone drinks with their non-dominant hand. Forgetting = 2 sips.',
-    },
-  },
-  {
-    kind: 'rule',
-    players: 1,
-    duration: 4,
-    text: {
-      fr: "{p1} ne peut plus rire. Un sourire visible et c'est 2 gorgées.",
-      en: '{p1} may not laugh. A visible smile costs 2 sips.',
-    },
-  },
-  {
-    kind: 'rule',
-    players: 0,
-    duration: 4,
-    text: {
-      fr: "Personne ne peut poser son verre par terre. Verre au sol = 2 gorgées.",
-      en: 'Nobody may put their glass on the floor. Glass down = 2 sips.',
-    },
-  },
-  {
-    kind: 'rule',
-    players: 1,
-    duration: 5,
-    text: {
-      fr: '{p1} doit terminer chaque phrase par "et je suis fier de moi". Oubli = 1 gorgée.',
-      en: '{p1} must end every sentence with "and I am proud of myself". Forgetting = 1 sip.',
-    },
-  },
-  {
-    kind: 'rule',
-    players: 0,
-    duration: 6,
-    text: {
-      fr: 'Interdiction de montrer du doigt. Utilisez le coude. Sinon, 2 gorgées.',
-      en: 'No pointing with fingers. Use your elbow. Otherwise, 2 sips.',
-    },
-  },
-  {
-    kind: 'rule',
-    players: 2,
-    duration: 5,
-    text: {
-      fr: '{p1} et {p2} sont liés : quand l\'un boit, l\'autre boit aussi.',
-      en: '{p1} and {p2} are linked: when one drinks, so does the other.',
-    },
-  },
-
-  // --- Timers ----------------------------------------------------------------
+  // --- Chronos ---------------------------------------------------------------
   {
     kind: 'timer',
-    players: 1,
-    seconds: 30,
+    seconds: 60,
     text: {
-      fr: '{p1} : cite 10 marques de vêtements en 30 secondes. Échec = 4 gorgées.',
-      en: '{p1}: name 10 clothing brands in 30 seconds. Fail = 4 sips.',
+      fr: 'Pictionary time ! {p1} fait deviner une action en dessinant. Le premier qui trouve distribue 3 gorgées. Personne au bout d\'une minute : {p1} boit 3 gorgées.',
+      en: 'Pictionary time! {p1} draws an action for the group to guess. First to get it hands out 3 sips. Nobody after a minute: {p1} drinks 3 sips.',
     },
   },
   {
     kind: 'timer',
-    players: 1,
-    seconds: 30,
+    seconds: 60,
     text: {
-      fr: '{p1} : trouve 5 objets bleus dans la pièce avant la fin du chrono. Échec = 3 gorgées.',
-      en: '{p1}: find 5 blue objects in the room before time runs out. Fail = 3 sips.',
-    },
-  },
-  {
-    kind: 'timer',
-    players: 0,
-    seconds: 45,
-    text: {
-      fr: 'Tout le monde : chacun son tour, citez un pays. 45 secondes. Celui qui bloque boit 4 gorgées.',
-      en: 'Everyone: take turns naming a country. 45 seconds. Whoever gets stuck drinks 4 sips.',
-    },
-  },
-  {
-    kind: 'timer',
-    players: 1,
-    seconds: 20,
-    text: {
-      fr: '{p1} : fais rire au moins une personne en 20 secondes, sinon 3 gorgées.',
-      en: '{p1}: make at least one person laugh in 20 seconds, or 3 sips.',
-    },
-  },
-  {
-    kind: 'timer',
-    players: 1,
-    seconds: 30,
-    text: {
-      fr: "{p1} : raconte ta journée en 30 secondes sans t'arrêter de parler. Blanc = 3 gorgées.",
-      en: '{p1}: tell us about your day for 30 seconds without stopping. Silence = 3 sips.',
-    },
-  },
-  {
-    kind: 'timer',
-    players: 2,
-    seconds: 30,
-    text: {
-      fr: '{p1} et {p2} : citez chacun votre tour un animal, sans répétition. 30 secondes. Le premier qui bloque boit 3 gorgées.',
-      en: '{p1} and {p2}: take turns naming animals, no repeats. 30 seconds. First to get stuck drinks 3 sips.',
+      fr: "{p1} : mime une personne célèbre, sans aucun son. Le premier qui trouve distribue 4 gorgées. Personne au bout d'une minute : tu bois 4 gorgées.",
+      en: '{p1}: mime a famous person, without a single sound. First to guess hands out 4 sips. Nobody after a minute: you drink 4 sips.',
     },
   },
 
   // --- Mini-jeux -------------------------------------------------------------
   {
     kind: 'minigame',
-    players: 0,
     text: {
-      fr: 'Je n\'ai jamais : {p1} lance. Ceux qui l\'ont déjà fait boivent.',
-      en: 'Never have I ever: {p1} starts. Those who have done it drink.',
+      fr: '{p1} : mets une musique. Le premier qui trouve le titre et l\'artiste distribue 3 gorgées.',
+      en: '{p1}: play a song. First to name the title and the artist hands out 3 sips.',
     },
   },
   {
     kind: 'minigame',
-    players: 1,
     text: {
-      fr: 'Le baccalauréat express : {p1} choisit une lettre. Chacun donne un prénom qui commence par cette lettre. Le premier qui bloque boit 3 gorgées.',
-      en: 'Speed alphabet: {p1} picks a letter. Everyone names a first name starting with it. First to get stuck drinks 3 sips.',
+      fr: '« Dans ma valise, il y a… » — {p1} commence. Le perdant boit 3 gorgées.',
+      en: '"In my suitcase, there is…" — {p1} starts. The loser drinks 3 sips.',
     },
   },
   {
     kind: 'minigame',
-    players: 0,
     text: {
-      fr: 'Le rythme : tout le monde tape des mains en rythme et cite une ville à tour de rôle. Hors rythme ou répétition = 2 gorgées.',
-      en: 'The rhythm: everyone claps a beat and names a city in turn. Off-beat or repeat = 2 sips.',
+      fr: 'À tour de rôle, dites en moins de 3 secondes un mot en rapport avec le précédent. Celui qui perd boit 3 gorgées. {p1} commence.',
+      en: 'Take turns saying a word related to the previous one, in under 3 seconds. Whoever loses drinks 3 sips. {p1} starts.',
+    },
+  },
+
+  // --- Règles ----------------------------------------------------------------
+  {
+    kind: 'rule',
+    duration: 5,
+    text: {
+      fr: 'La prochaine personne qui consulte son téléphone boit 4 gorgées. Celui qui lit les cartes est exempté, évidemment.',
+      en: 'The next person to check their phone drinks 4 sips. Whoever is reading the cards is exempt, obviously.',
     },
   },
   {
-    kind: 'minigame',
-    players: 1,
+    kind: 'rule',
+    duration: 6,
     text: {
-      fr: '{p1} choisit une catégorie (séries, plats, chanteurs). Tour de table jusqu\'à ce que quelqu\'un bloque : 3 gorgées.',
-      en: '{p1} picks a category (shows, dishes, singers). Go around until someone gets stuck: 3 sips.',
+      fr: 'Ni oui ni non ! 2 gorgées à chaque erreur.',
+      en: 'No saying yes or no! 2 sips for every slip.',
     },
   },
   {
-    kind: 'minigame',
-    players: 0,
+    kind: 'rule',
     text: {
-      fr: 'Vote à main levée : qui ferait le meilleur président de ce groupe ? Le perdant du vote boit 3 gorgées.',
-      en: 'Show of hands: who would make the best president of this group? The loser of the vote drinks 3 sips.',
+      fr: '{p1} choisit un mot interdit jusqu\'à la fin de la partie, sous peine de pénalité ultime.',
+      en: '{p1} picks a forbidden word for the rest of the game, on pain of the ultimate penalty.',
     },
   },
   {
-    kind: 'minigame',
-    players: 2,
+    kind: 'rule',
     text: {
-      fr: '{p1} et {p2} : deux vérités et un mensonge chacun. Celui qui se fait démasquer boit 3 gorgées.',
-      en: '{p1} and {p2}: two truths and a lie each. Whoever gets caught drinks 3 sips.',
+      fr: "Si un joueur arrive à faire boire dans son verre à un autre sans que celui-ci ne le remarque, la victime devra finir le verre.",
+      en: 'If a player gets someone else to drink from their glass without noticing, the victim has to finish the glass.',
+    },
+  },
+
+  // --- Tout le monde ---------------------------------------------------------
+  {
+    kind: 'group',
+    text: {
+      fr: 'Tous ceux qui ont déjà fait un test sur internet pour connaître leur orientation sexuelle boivent 5 gorgées. Vous êtes gay.',
+      en: 'Everyone who has ever taken an online quiz to find out their sexual orientation drinks 5 sips. You are gay.',
+    },
+  },
+  {
+    kind: 'group',
+    text: {
+      fr: 'Tour de pierre-feuille-ciseaux : tout le monde affronte son voisin de gauche. Les perdants boivent 2 gorgées.',
+      en: 'Rock-paper-scissors round: everyone plays the person on their left. Losers drink 2 sips.',
+    },
+  },
+
+  // --- Qui est le plus susceptible de… ---------------------------------------
+  {
+    kind: 'group',
+    text: {
+      fr: "Qui est le plus susceptible de participer à un jeu télé, de perdre lamentablement et d'insulter le présentateur ? Votez tous en même temps, le plus désigné boit 2 gorgées.",
+      en: 'Who is most likely to go on a game show, lose miserably and insult the host? Everyone votes at once, the most-picked drinks 2 sips.',
+    },
+  },
+  {
+    kind: 'group',
+    text: {
+      fr: "Qui est le plus susceptible de partir en mission pour sauver la France et d'aller enfin dire ses quatre vérités à Manu Macron ? Votez tous en même temps, le plus désigné distribue 3 gorgées. On compte sur toi.",
+      en: 'Who is most likely to go on a mission to save France and finally give Manu Macron a piece of their mind? Everyone votes at once, the most-picked hands out 3 sips. We are counting on you.',
+    },
+  },
+  {
+    kind: 'group',
+    text: {
+      fr: "Qui est le plus susceptible de se réveiller nu(e) au milieu du désert, sans savoir où il est ni comment il en est arrivé là ? Votez tous en même temps. Le plus désigné ne boit pas, car il s'agirait d'arrêter : c'est une intervention.",
+      en: 'Who is most likely to wake up naked in the middle of the desert, with no idea where they are or how they got there? Everyone votes at once. The most-picked does not drink, because it is time to stop: this is an intervention.',
+    },
+  },
+  {
+    kind: 'group',
+    text: {
+      fr: 'Qui est le plus susceptible d\'oublier son prénom ? Votez tous en même temps, le plus désigné boit 2 gorgées.',
+      en: 'Who is most likely to forget their own first name? Everyone votes at once, the most-picked drinks 2 sips.',
+    },
+  },
+  {
+    kind: 'group',
+    text: {
+      fr: 'Qui tient le moins l\'alcool ? Votez tous en même temps, le plus désigné boit 3 gorgées pour prouver le contraire.',
+      en: 'Who holds their drink worst? Everyone votes at once, the most-picked drinks 3 sips to prove you wrong.',
     },
   },
 ])

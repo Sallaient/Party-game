@@ -37,11 +37,18 @@ let total = 0
 for (const pack of PACKS) {
   for (const card of pack.cards) {
     total += 1
-    const fr = unique(indices(card.text.fr))
-    const en = unique(indices(card.text.en))
+    // An answer can name players too, so both halves share one placeholder set.
+    const fr = unique([...indices(card.text.fr), ...indices(card.reveal?.fr ?? '')])
+    const en = unique([...indices(card.text.en), ...indices(card.reveal?.en ?? '')])
 
     if (fr.join(',') !== en.join(',')) {
       problems.push(`${card.id}: FR uses {p${fr.join('} {p')}} but EN uses {p${en.join('} {p')}}`)
+    }
+
+    if (card.reveal) {
+      for (const lang of ['fr', 'en']) {
+        if (!card.reveal[lang]?.trim()) problems.push(`${card.id}: empty ${lang} reveal`)
+      }
     }
 
     // Indices must be a contiguous run starting at 1.
@@ -55,8 +62,13 @@ for (const pack of PACKS) {
     if (card.players !== fr.length) {
       problems.push(`${card.id}: players=${card.players} but text needs ${fr.length}`)
     }
-    if (card.kind === 'rule' && !card.duration) {
-      problems.push(`${card.id}: rule card without a duration`)
+    // A rule may omit `duration` on purpose: that means it lasts the whole
+    // game. What it must not do is declare a duration that expires instantly.
+    if (card.duration !== undefined && card.duration < 1) {
+      problems.push(`${card.id}: duration ${card.duration} would expire immediately`)
+    }
+    if (card.kind !== 'rule' && card.duration !== undefined) {
+      problems.push(`${card.id}: duration is only meaningful on a rule card`)
     }
     if (card.kind === 'timer' && !card.seconds) {
       problems.push(`${card.id}: timer card without seconds`)

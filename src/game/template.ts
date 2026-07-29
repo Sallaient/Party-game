@@ -61,6 +61,7 @@ export function drawCard(def: CardDef, allPlayers: string[], recent: string[]): 
     def,
     players,
     text: fillLocalized(def.text, players),
+    reveal: def.reveal ? fillLocalized(def.reveal, players) : undefined,
   }
 }
 

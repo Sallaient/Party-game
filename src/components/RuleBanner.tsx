@@ -23,8 +23,9 @@ export function RuleBanner({ rules }: { rules: ActiveRule[] }) {
                   <span className="flex-1 text-[0.8125rem] leading-snug text-white/80">
                     {L(rule.text)}
                   </span>
+                  {/* A rule with no countdown runs until the game ends. */}
                   <span className="tabular label mt-0.5 shrink-0 text-white/35">
-                    {rule.remaining}
+                    {rule.remaining ?? '∞'}
                   </span>
                 </li>
               ))}

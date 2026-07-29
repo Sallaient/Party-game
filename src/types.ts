@@ -6,7 +6,7 @@ export interface Localized {
   en: string
 }
 
-export type PackId = 'classique' | 'defis' | 'hot' | 'hardcore' | 'perso'
+export type PackId = 'classique' | 'perso'
 
 /**
  * How a card behaves once drawn.
@@ -30,7 +30,12 @@ export interface CardDef {
    */
   players: number
   text: Localized
-  /** Turns a `rule` card stays active. Ignored for other kinds. */
+  /**
+   * Hidden until the reader taps for it — the answer to a trivia card, kept
+   * off screen so the person holding the phone cannot read it out by accident.
+   */
+  reveal?: Localized
+  /** Turns a `rule` card stays active. Omitted means it lasts the whole game. */
   duration?: number
   /** Countdown length in seconds for a `timer` card. */
   seconds?: number
@@ -45,14 +50,16 @@ export interface DrawnCard {
   players: string[]
   /** Card copy with placeholders already replaced, per language. */
   text: Localized
+  /** Answer copy, placeholders already replaced. */
+  reveal?: Localized
 }
 
 export interface ActiveRule {
   key: string
   cardId: string
   text: Localized
-  /** Turns left, decremented at the start of each new draw. */
-  remaining: number
+  /** Turns left, decremented at each new draw. `null` means it never expires. */
+  remaining: number | null
 }
 
 export interface CustomCard {
@@ -60,6 +67,8 @@ export interface CustomCard {
   kind: CardKind
   players: number
   text: string
+  /** Optional answer, hidden behind a tap like the built-in trivia cards. */
+  reveal?: string
   /** Language the player wrote it in; shown in both, untranslated. */
   lang: Lang
   duration?: number
@@ -70,7 +79,6 @@ export interface CustomCard {
 export interface Settings {
   lang: Lang
   haptics: boolean
-  adultUnlocked: boolean
 }
 
 export type Screen = 'home' | 'players' | 'packs' | 'game' | 'custom' | 'settings'

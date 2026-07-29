@@ -5,6 +5,7 @@ import { packColor, packName } from '../data/packs'
 import { useApp } from '../store/AppContext'
 import type { StringKey } from '../i18n/strings'
 import { CardTimer } from './CardTimer'
+import { CardReveal } from './CardReveal'
 
 const KIND_LABEL: Record<CardKind, StringKey> = {
   action: 'kindAction',
@@ -79,9 +80,12 @@ export function GameCard({ card, onNext, onPrevious, canGoBack }: Props) {
         <p className={`text-center font-bold -tracking-[0.02em] ${textSize(text.length)}`}>{text}</p>
       </div>
 
-      {kind === 'timer' && card.def.seconds && (
-        <div className="pb-5">
-          <CardTimer seconds={card.def.seconds} cardKey={card.key} />
+      {(card.reveal || (kind === 'timer' && card.def.seconds)) && (
+        <div className="space-y-2 pb-5">
+          {kind === 'timer' && card.def.seconds && (
+            <CardTimer seconds={card.def.seconds} cardKey={card.key} />
+          )}
+          {card.reveal && <CardReveal answer={card.reveal} />}
         </div>
       )}
 
@@ -92,9 +96,11 @@ export function GameCard({ card, onNext, onPrevious, canGoBack }: Props) {
         <span className="truncate text-[0.8125rem] font-semibold text-white/75">
           {card.players.length > 0 ? card.players.join(' · ') : ' '}
         </span>
-        {kind === 'rule' && card.def.duration && (
+        {kind === 'rule' && (
           <span className="label shrink-0 text-white/70">
-            {card.def.duration} {s('gameTurnsLeft')}
+            {card.def.duration
+              ? `${card.def.duration} ${s('gameTurnsLeft')}`
+              : s('gameWholeGame')}
           </span>
         )}
       </div>

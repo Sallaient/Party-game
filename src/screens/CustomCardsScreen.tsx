@@ -58,7 +58,13 @@ export function CustomCardsScreen({ onBack }: { onBack: () => void }) {
       setError(s('customNeedText'))
       return
     }
-    upsertCustomCard({ ...draft, text, players: countPlaceholders(text) })
+    const reveal = draft.reveal?.trim()
+    upsertCustomCard({
+      ...draft,
+      text,
+      reveal: reveal || undefined,
+      players: countPlaceholders(text),
+    })
     setDraft(null)
     setError(null)
     buzz(10)
@@ -224,14 +230,33 @@ export function CustomCardsScreen({ onBack }: { onBack: () => void }) {
               </div>
             </div>
 
-            {draft.kind === 'rule' && (
-              <NumberField
-                label={s('customDurationLabel')}
-                value={draft.duration ?? 5}
-                min={1}
-                max={15}
-                onChange={(duration) => setDraft({ ...draft, duration })}
+            <div>
+              <label htmlFor="card-reveal" className="label mb-2 block text-white/35">
+                {s('customRevealLabel')}
+              </label>
+              <input
+                id="card-reveal"
+                value={draft.reveal ?? ''}
+                onChange={(event) => setDraft({ ...draft, reveal: event.target.value })}
+                maxLength={140}
+                placeholder={s('customRevealPlaceholder')}
+                className="field"
               />
+            </div>
+
+            {draft.kind === 'rule' && (
+              <div>
+                <NumberField
+                  label={s('customDurationLabel')}
+                  value={draft.duration ?? 0}
+                  min={0}
+                  max={15}
+                  onChange={(duration) => setDraft({ ...draft, duration })}
+                />
+                <p className="mt-2 text-[0.75rem] leading-snug text-white/30">
+                  {s('customDurationHint')}
+                </p>
+              </div>
             )}
             {draft.kind === 'timer' && (
               <NumberField

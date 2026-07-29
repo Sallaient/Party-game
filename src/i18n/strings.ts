@@ -64,18 +64,13 @@ export const STRINGS = {
     fr: 'Aucune carte perso pour le moment.',
     en: 'No custom cards yet.',
   },
-  adultBadge: { fr: '18+', en: '18+' },
-  adultGateTitle: { fr: 'Contenu réservé aux adultes', en: 'Adults only' },
-  adultGateBody: {
-    fr: "Ce paquet contient des gages et des questions destinés à un public majeur et consentant. Tout le monde autour de la table doit être d'accord.",
-    en: 'This pack contains dares and questions meant for consenting adults. Everyone around the table needs to be on board.',
-  },
-  adultGateConfirm: { fr: "J'ai 18 ans ou plus", en: 'I am 18 or older' },
-
   // Game
   gameTapToContinue: { fr: 'Touchez pour la suite', en: 'Tap for the next card' },
   gameRules: { fr: 'Règles en cours', en: 'Active rules' },
   gameTurnsLeft: { fr: 'tours', en: 'turns' },
+  gameWholeGame: { fr: 'toute la partie', en: 'whole game' },
+  gameReveal: { fr: 'Voir la réponse', en: 'Reveal the answer' },
+  gameAnswer: { fr: 'Réponse', en: 'Answer' },
   gameQuit: { fr: 'Quitter la partie', en: 'Quit game' },
   gameQuitConfirm: {
     fr: 'Quitter la partie en cours ?',
@@ -113,6 +108,15 @@ export const STRINGS = {
     en: '{p1} drinks 3 sips and explains why.',
   },
   customKindLabel: { fr: 'Type', en: 'Type' },
+  customRevealLabel: { fr: 'Réponse (optionnel)', en: 'Answer (optional)' },
+  customRevealPlaceholder: {
+    fr: 'Cachée derrière un bouton pendant la partie.',
+    en: 'Hidden behind a button during the game.',
+  },
+  customDurationHint: {
+    fr: 'Laissez à 0 pour une règle qui dure toute la partie.',
+    en: 'Leave at 0 for a rule that lasts the whole game.',
+  },
   customDurationLabel: { fr: 'Durée (tours)', en: 'Duration (turns)' },
   customSecondsLabel: { fr: 'Chrono (secondes)', en: 'Timer (seconds)' },
   customInsertName: { fr: 'Insérer un prénom', en: 'Insert a name' },
@@ -136,7 +140,6 @@ export const STRINGS = {
     fr: 'Petite vibration à chaque nouvelle carte.',
     en: 'A short buzz on every new card.',
   },
-  settingsAdult: { fr: 'Contenu 18+ débloqué', en: '18+ content unlocked' },
   settingsReset: { fr: 'Tout réinitialiser', en: 'Reset everything' },
   settingsResetConfirm: {
     fr: 'Effacer joueurs, cartes perso et réglages ?',

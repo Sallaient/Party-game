@@ -20,6 +20,8 @@ export function deck(pack: PackId, prefix: string, cards: RawCard[]): CardDef[] 
       card.players ?? 0,
       countPlaceholders(card.text.fr),
       countPlaceholders(card.text.en),
+      countPlaceholders(card.reveal?.fr ?? ''),
+      countPlaceholders(card.reveal?.en ?? ''),
     ),
   }))
 }

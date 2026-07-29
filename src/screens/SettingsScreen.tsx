@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useApp } from '../store/AppContext'
 import { ScreenBody, ScreenHeader, SectionLabel } from '../components/Screen'
 import { Modal } from '../components/Modal'
-import { Download, Lock, Unlock } from '../components/Icon'
+import { Download } from '../components/Icon'
 import type { Lang } from '../types'
 
 /** The event Chromium fires when the app is installable. */
@@ -76,12 +76,6 @@ export function SettingsScreen({ onBack }: { onBack: () => void }) {
                 />
               </div>
 
-              <div className="flex items-center gap-4 px-4 py-3.5">
-                <p className="flex-1 text-[0.9375rem] font-medium">{s('settingsAdult')}</p>
-                <span className="text-white/40">
-                  {settings.adultUnlocked ? <Unlock /> : <Lock />}
-                </span>
-              </div>
             </div>
           </section>
 

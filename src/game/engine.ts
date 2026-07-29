@@ -29,7 +29,9 @@ export function customToCardDef(card: CustomCard): CardDef {
     kind: card.kind,
     players: card.players,
     text: { fr: card.text, en: card.text },
-    duration: card.duration,
+    reveal: card.reveal ? { fr: card.reveal, en: card.reveal } : undefined,
+    // 0 in the editor means "no countdown", i.e. a rule that lasts the game.
+    duration: card.duration || undefined,
     seconds: card.seconds,
   }
 }
@@ -104,20 +106,22 @@ export function advance(state: GameState, customCards: CustomCard[]): GameState 
   if (!taken) return state
 
   const previous = state.turns[state.index]
+  // A `null` remaining marks a rule that lasts the whole game: never counted
+  // down, never expired.
   const banner = (previous?.carry ?? [])
-    .map((rule) => ({ ...rule, remaining: rule.remaining - 1 }))
-    .filter((rule) => rule.remaining > 0)
+    .map((rule) => (rule.remaining === null ? rule : { ...rule, remaining: rule.remaining - 1 }))
+    .filter((rule) => rule.remaining === null || rule.remaining > 0)
 
   const card = drawCard(taken.card, state.players, state.recent)
 
   const carry = [...banner]
-  if (card.def.kind === 'rule' && card.def.duration) {
+  if (card.def.kind === 'rule') {
     ruleCounter += 1
     carry.push({
       key: `${card.def.id}-${ruleCounter}`,
       cardId: card.def.id,
       text: card.text,
-      remaining: card.def.duration,
+      remaining: card.def.duration ?? null,
     })
   }
 

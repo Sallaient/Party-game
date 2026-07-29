@@ -4,18 +4,19 @@ A Picolo-style drinking game as an installable, offline-first PWA. Put one phone
 in the middle of the table, one person reads the card out loud, the group does
 it, tap for the next one. Player names are injected straight into the cards.
 
-**222 cards**, every one written in both French and English.
+**29 cards**, every one written in both French and English.
 
 ## Features
 
-- **Four packs** — Classique (81), Défis & mini-jeux (44), Hot 18+ (45),
-  Grosse cuite 18+ (52). Mix any combination; the cards get shuffled together.
 - **Names in the cards** — add the players once and cards read *"Enzo, bois 2
-  gorgées"* or pair two people up for a duel. The engine spreads targets around
-  so the same person is not picked twice in a row.
+  gorgées"*. The engine spreads targets around so the same person is not picked
+  twice in a row.
 - **Persistent rules** — rule cards stay in a banner at the top with a turn
-  counter and expire on their own.
-- **Timed challenges** — countdown cards with a progress ring and a buzz at zero.
+  counter and expire on their own. A rule with no duration runs until the game
+  ends and shows ∞ instead of a countdown.
+- **Hidden answers** — trivia cards keep their answer behind a tap, so whoever
+  is holding the phone cannot read it out by accident.
+- **Timed challenges** — countdown cards with a progress bar and a buzz at zero.
 - **Custom cards** — write your own with a `{p1}` / `{p2}` placeholder picker,
   stored on the device and mixed into the deck.
 - **FR / EN** — switchable at any time, including mid-game.
@@ -79,7 +80,7 @@ BASE_PATH=/Party-game/ npm run build
 
 ```
 src/
-├── data/          card decks, one file per pack, plus pack metadata
+├── data/          the card deck, plus pack metadata
 ├── game/
 │   ├── engine.ts    deck building, turn history, rule lifecycle
 │   └── template.ts  player picking, {pN} substitution, shuffling
@@ -93,7 +94,7 @@ scripts/
 
 ## Writing cards
 
-Cards live in `src/data/<pack>.ts`. A card is:
+Cards live in `src/data/classique.ts`. A card is:
 
 ```ts
 {
@@ -110,17 +111,25 @@ not declare how many players a card needs** — it is derived from the
 placeholders in the text, so the two can never drift apart. Cards needing more
 players than the group has are dropped from the deck automatically.
 
-`rule` cards take a `duration` (turns to stay on the banner), `timer` cards take
-`seconds`.
+`rule` cards take a `duration` (turns to stay on the banner) — omit it and the
+rule lasts the whole game. `timer` cards take `seconds`. Any card may carry a
+`reveal`, an answer hidden behind a button until the reader taps for it:
+
+```ts
+{
+  kind: 'question',
+  text: { fr: '{p1} : capitale de la Finlande ?', en: '{p1}: capital of Finland?' },
+  reveal: { fr: 'Helsinki', en: 'Helsinki' },
+}
+```
 
 `npm run validate` enforces the invariants that would otherwise reach the table:
-placeholders must start at `{p1}` and run contiguously, FR and EN must name the
-same players, rule cards need a duration, timer cards need seconds, ids must be
-unique, and every UI string must exist in both languages.
+placeholders must start at `{p1}` and run contiguously across the card text and
+its answer, FR and EN must name the same players, a declared duration must not
+expire instantly and only belongs on rule cards, timer cards need seconds, ids
+must be unique, and every UI string must exist in both languages.
 
 ## A note on the content
 
-The 18+ packs are gated behind an age confirmation and are suggestive and
-chaotic rather than explicit. Dares are written with a stated way out, because
-passing has to stay free — the app says so on the home screen and in Settings.
-Drink responsibly.
+Dares are written with a stated way out, because passing has to stay free — the
+app says so on the home screen and in Settings. Drink responsibly.

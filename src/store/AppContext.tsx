@@ -15,7 +15,6 @@ interface AppValue {
   settings: Settings
   setLang: (lang: Lang) => void
   setHaptics: (on: boolean) => void
-  unlockAdult: () => void
 
   players: string[]
   setPlayers: (players: string[]) => void
@@ -60,10 +59,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
     (haptics: boolean) => setSettings((prev) => ({ ...prev, haptics })),
     [],
   )
-  const unlockAdult = useCallback(
-    () => setSettings((prev) => ({ ...prev, adultUnlocked: true })),
-    [],
-  )
 
   const setPlayers = useCallback((next: string[]) => setPlayersState(next), [])
   const setPacks = useCallback((next: PackId[]) => setPacksState(next), [])
@@ -86,7 +81,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setPlayersState([])
     setPacksState(['classique'])
     setCustomCards([])
-    setSettings((prev) => ({ ...prev, adultUnlocked: false }))
   }, [])
 
   const buzz = useCallback(
@@ -102,7 +96,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
       settings,
       setLang,
       setHaptics,
-      unlockAdult,
       players,
       setPlayers,
       packs,
@@ -123,7 +116,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
       settings,
       setLang,
       setHaptics,
-      unlockAdult,
       players,
       setPlayers,
       packs,
