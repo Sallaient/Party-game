@@ -353,8 +353,8 @@ export const classique = deck('classique', 'cl', [
   {
     kind: 'group',
     text: {
-      fr: "Qui est le plus susceptible de partir en mission pour sauver la France et d'aller enfin dire ses quatre vérités à Manu Macron ? Votez tous en même temps, le plus désigné distribue 3 gorgées. On compte sur toi.",
-      en: 'Who is most likely to go on a mission to save France and finally give Manu Macron a piece of their mind? Everyone votes at once, the most-picked hands out 3 sips. We are counting on you.',
+      fr: "Qui est le plus susceptible de partir en mission pour sauver la France et enfin tuer Manu ? Votez tous en même temps, le Héros distribue 3 gorgées. On compte sur toi.",
+      en: 'Who is most likely to go on a mission to save France and finally kill Manu? Everyone votes at once, the Hero hands out 3 sips. We are counting on you.',
     },
   },
   {
