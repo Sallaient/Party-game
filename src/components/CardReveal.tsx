@@ -23,7 +23,6 @@ export function CardReveal({ answer }: { answer: Localized }) {
           transition={{ duration: 0.16 }}
           className="rounded-lg border border-white/30 bg-black/20 px-4 py-3"
         >
-          <p className="label mb-1.5 text-white/60">{s('gameAnswer')}</p>
           <p className="text-[1.0625rem] font-semibold leading-snug">{L(answer)}</p>
         </motion.div>
       ) : (

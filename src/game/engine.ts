@@ -2,6 +2,13 @@ import type { ActiveRule, CardDef, CustomCard, DrawnCard, PackId } from '../type
 import { PACKS } from '../data/packs'
 import { drawCard, shuffle } from './template'
 
+/**
+ * Cards dealt per round. The deck is shuffled once at the start and dealt off
+ * the front, so as long as this stays below the deck size a round cannot repeat
+ * a card.
+ */
+export const GAME_LENGTH = 20
+
 /** One card on screen, plus the rules that apply while it is showing. */
 export interface Turn {
   card: DrawnCard
@@ -20,6 +27,8 @@ export interface GameState {
   index: number
   /** Recently targeted players, used to spread the pain around. */
   recent: string[]
+  /** True once the round's last card has been played through. */
+  over: boolean
 }
 
 export function customToCardDef(card: CustomCard): CardDef {
@@ -72,6 +81,7 @@ export function createGame(
     turns: [],
     index: -1,
     recent: [],
+    over: false,
   }
 }
 
@@ -100,6 +110,11 @@ export function advance(state: GameState, customCards: CustomCard[]): GameState 
   // Replaying a card the group already saw: just move the pointer.
   if (state.index < state.turns.length - 1) {
     return { ...state, index: state.index + 1 }
+  }
+
+  // The round is a fixed length, so past the last card there is nothing to deal.
+  if (state.turns.length >= GAME_LENGTH) {
+    return state.over ? state : { ...state, over: true }
   }
 
   const taken = takeCard(state, customCards)
@@ -142,6 +157,8 @@ export function advance(state: GameState, customCards: CustomCard[]): GameState 
 }
 
 export function rewind(state: GameState): GameState {
+  // From the end screen, stepping back returns to the final card.
+  if (state.over) return { ...state, over: false }
   if (state.index <= 0) return state
   return { ...state, index: state.index - 1 }
 }

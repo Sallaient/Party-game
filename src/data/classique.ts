@@ -107,6 +107,13 @@ export const classique = deck('classique', 'cl', [
       en: '{p1}: share your celebrity crush. If the majority disagrees, you drink 2 sips.',
     },
   },
+  {
+    kind: 'question',
+    text: {
+      fr: "{p1} : avec qui ici penses-tu qu'il serait le plus probable que tu te battes physiquement ? Cette personne boit 3 gorgées.",
+      en: '{p1}: who here are you most likely to end up in a physical fight with? That person drinks 3 sips.',
+    },
+  },
 
   // --- Duels -----------------------------------------------------------------
   {
@@ -186,6 +193,110 @@ export const classique = deck('classique', 'cl', [
     text: {
       fr: '{p1} : mime une personne présente dans la pièce. Le premier qui trouve distribue 4 gorgées.',
       en: '{p1}: mime someone in this room. First to guess hands out 4 sips.',
+    },
+  },
+
+  // --- Distributions ---------------------------------------------------------
+  {
+    kind: 'action',
+    text: {
+      fr: "{p1} : distribue autant de gorgées qu'il y a de chiffres à ton compte en banque.",
+      en: '{p1}: hand out one sip per digit in your bank balance.',
+    },
+  },
+  {
+    kind: 'action',
+    text: {
+      fr: '{p1} : distribue autant de gorgées qu\'il y a de lettres dans ton prénom.',
+      en: '{p1}: hand out one sip per letter in your first name.',
+    },
+  },
+  {
+    kind: 'action',
+    text: {
+      fr: '{p1} : attribue un animal à chacun selon sa vibe, et le nombre de gorgées que tu souhaites, entre 1 et 5.',
+      en: '{p1}: give everyone an animal based on their vibe, and however many sips you like, from 1 to 5.',
+    },
+  },
+  {
+    kind: 'action',
+    text: {
+      fr: "{p1} : donne 3 gorgées à quelqu'un pour lui montrer ton amour.",
+      en: '{p1}: give 3 sips to someone to show them your love.',
+    },
+  },
+  {
+    kind: 'action',
+    text: {
+      fr: "{p1} : distribue 2 gorgées à la personne avec qui tu aurais le moins envie de faire une coloc. 2 de plus si tu dis pourquoi.",
+      en: '{p1}: hand 2 sips to the person you would least want as a flatmate. 2 more if you say why.',
+    },
+  },
+  {
+    kind: 'action',
+    text: {
+      fr: '{p1} : distribue 4 gorgées à la personne que tu connais depuis le plus longtemps ici.',
+      en: '{p1}: hand 4 sips to the person here you have known the longest.',
+    },
+  },
+  {
+    kind: 'action',
+    text: {
+      fr: '{p1} : distribue 2 gorgées à la personne la plus vieille.',
+      en: '{p1}: hand 2 sips to the oldest person.',
+    },
+  },
+  {
+    kind: 'action',
+    text: {
+      fr: '{p1} : distribue 3 gorgées à la personne la plus jeune.',
+      en: '{p1}: hand 3 sips to the youngest person.',
+    },
+  },
+  {
+    kind: 'action',
+    text: {
+      fr: '{p1} : distribue 3 gorgées à la personne la plus autiste.',
+      en: '{p1}: hand 3 sips to the most autistic person.',
+    },
+  },
+  {
+    kind: 'action',
+    text: {
+      fr: '{p1} : donne un défaut à chacun des joueurs. La suite arrive…',
+      en: '{p1}: give every player a flaw. There is more to come…',
+    },
+    reveal: {
+      fr: 'Tous les joueurs qui ont contesté leur attribution boivent 3 gorgées.',
+      en: 'Every player who argued with what they were given drinks 3 sips.',
+    },
+  },
+  {
+    kind: 'action',
+    text: {
+      fr: '{p1} : distribue autant de gorgées que tu citeras de députés LFI.',
+      en: '{p1}: hand out one sip for every LFI MP you can name.',
+    },
+  },
+  {
+    kind: 'action',
+    text: {
+      fr: "{p1} : distribue autant de gorgées que tu citeras d'ex de personnes présentes.",
+      en: '{p1}: hand out one sip for every ex of someone here that you can name.',
+    },
+  },
+  {
+    kind: 'action',
+    text: {
+      fr: '{p1} : distribue autant de gorgées que tu citeras de musiques de Colonel Reyel.',
+      en: '{p1}: hand out one sip for every Colonel Reyel song you can name.',
+    },
+  },
+  {
+    kind: 'action',
+    text: {
+      fr: '{p1} : distribue autant de gorgées que tu citeras de marques de vodka.',
+      en: '{p1}: hand out one sip for every vodka brand you can name.',
     },
   },
 
@@ -309,8 +420,8 @@ export const classique = deck('classique', 'cl', [
   {
     kind: 'group',
     text: {
-      fr: "Si tout le monde décide de partir en voyage, qui oublie son passeport et regarde l'avion partir ?",
-      en: 'If everyone went travelling together, who forgets their passport and watches the plane leave?',
+      fr: "Tout le monde décide de partir en voyage. Qui oublie son passeport et regarde l'avion partir ? Votez tous en même temps, le gogole boit 2 gorgées.",
+      en: 'Everyone decides to go travelling. Who forgets their passport and watches the plane leave? Everyone votes at once, the muppet drinks 2 sips.',
     },
   },
   {

@@ -1,8 +1,16 @@
 import { useCallback, useEffect, useState } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import { useApp } from '../store/AppContext'
-import { advance, createGame, currentTurn, rewind, type GameState } from '../game/engine'
+import {
+  advance,
+  createGame,
+  currentTurn,
+  rewind,
+  GAME_LENGTH,
+  type GameState,
+} from '../game/engine'
 import { GameCard } from '../components/GameCard'
+import { GameOver } from '../components/GameOver'
 import { RuleBanner } from '../components/RuleBanner'
 import { Modal } from '../components/Modal'
 import { ChevronLeft, Close } from '../components/Icon'
@@ -29,6 +37,11 @@ export function GameScreen({ onQuit }: { onQuit: () => void }) {
     setState((prev) => rewind(prev))
   }, [])
 
+  const replay = useCallback(() => {
+    setState(advance(createGame(players, packs, customCards), customCards))
+    buzz(12)
+  }, [players, packs, customCards, buzz])
+
   // Keyboard support: handy when someone casts the phone to a TV.
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -44,6 +57,19 @@ export function GameScreen({ onQuit }: { onQuit: () => void }) {
   }, [next, previous])
 
   const turn = currentTurn(state)
+
+  if (state.over) {
+    return (
+      <GameOver
+        cardsPlayed={state.turns.length}
+        players={state.players}
+        rules={state.turns[state.turns.length - 1]?.carry ?? []}
+        onReplay={replay}
+        onQuit={onQuit}
+        onBack={previous}
+      />
+    )
+  }
 
   if (!turn) {
     return (
@@ -70,7 +96,7 @@ export function GameScreen({ onQuit }: { onQuit: () => void }) {
         </button>
 
         <span className="tabular label flex-1 text-center text-white/35">
-          {s('gameCardCount')} {state.index + 1}
+          {s('gameCardCount')} {state.index + 1} / {GAME_LENGTH}
         </span>
 
         <button

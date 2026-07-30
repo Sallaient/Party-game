@@ -69,8 +69,9 @@ export const STRINGS = {
   gameRules: { fr: 'Règles en cours', en: 'Active rules' },
   gameTurnsLeft: { fr: 'tours', en: 'turns' },
   gameWholeGame: { fr: 'toute la partie', en: 'whole game' },
-  gameReveal: { fr: 'Voir la réponse', en: 'Reveal the answer' },
-  gameAnswer: { fr: 'Réponse', en: 'Answer' },
+  // Neutral wording: a reveal holds back a trivia answer on some cards and a
+  // delayed twist on others.
+  gameReveal: { fr: 'Révéler', en: 'Reveal' },
   gameQuit: { fr: 'Quitter la partie', en: 'Quit game' },
   gameQuitConfirm: {
     fr: 'Quitter la partie en cours ?',
@@ -80,6 +81,16 @@ export const STRINGS = {
   gameStartTimer: { fr: 'Lancer le chrono', en: 'Start timer' },
   gameTimerDone: { fr: "Temps écoulé !", en: "Time's up!" },
   gameSkip: { fr: 'Passer', en: 'Skip' },
+  // End of round
+  gameOverTitle: { fr: 'Partie terminée', en: 'Round over' },
+  gameOverBody: {
+    fr: 'Tout le monde est encore debout ? Rejouez pour un nouveau tirage.',
+    en: 'Everyone still standing? Play again for a fresh shuffle.',
+  },
+  gameOverReplay: { fr: 'Rejouer', en: 'Play again' },
+  gameOverHome: { fr: "Retour à l'accueil", en: 'Back to home' },
+  gameOverRules: { fr: 'Règles encore en vigueur', en: 'Rules still standing' },
+
   gameEmptyDeck: {
     fr: "Aucune carte jouable avec ces réglages. Ajoutez un mode ou des joueurs.",
     en: 'No playable cards with these settings. Add a pack or more players.',

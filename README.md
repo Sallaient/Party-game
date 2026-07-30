@@ -4,18 +4,21 @@ A Picolo-style drinking game as an installable, offline-first PWA. Put one phone
 in the middle of the table, one person reads the card out loud, the group does
 it, tap for the next one. Player names are injected straight into the cards.
 
-**49 cards**, every one written in both French and English.
+**64 cards**, every one written in both French and English.
 
 ## Features
 
+- **Rounds of 20 cards** — the deck is shuffled once at the start and dealt off
+  the front, so a round never repeats a card. It ends on an outro screen offering
+  a replay (fresh shuffle) or a return home.
 - **Names in the cards** — add the players once and cards read *"Enzo, bois 2
   gorgées"*. The engine spreads targets around so the same person is not picked
   twice in a row.
 - **Persistent rules** — rule cards stay in a banner at the top with a turn
   counter and expire on their own. A rule with no duration runs until the game
   ends and shows ∞ instead of a countdown.
-- **Hidden answers** — trivia cards keep their answer behind a tap, so whoever
-  is holding the phone cannot read it out by accident.
+- **Hidden reveals** — a card can hold back a trivia answer or a delayed twist
+  behind a tap, so whoever is holding the phone cannot read it out by accident.
 - **Timed challenges** — countdown cards with a progress bar and a buzz at zero.
 - **Custom cards** — write your own with a `{p1}` / `{p2}` placeholder picker,
   stored on the device and mixed into the deck.
@@ -113,7 +116,8 @@ players than the group has are dropped from the deck automatically.
 
 `rule` cards take a `duration` (turns to stay on the banner) — omit it and the
 rule lasts the whole game. `timer` cards take `seconds`. Any card may carry a
-`reveal`, an answer hidden behind a button until the reader taps for it:
+`reveal`, held back behind a button until the reader taps for it — an answer,
+or a twist that lands after the group has committed:
 
 ```ts
 {
